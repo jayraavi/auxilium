@@ -1,8 +1,9 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import "./App.css";
-import PrimaryAppSearchBar from "./components/AppBar";
 import Home from "./Home";
+import LoginPage from "./LoginPage";
+import ProfilePage from "./ProfilePage";
 
 const useStyles = makeStyles({
   root: {
@@ -20,6 +21,8 @@ function App() {
   const classes = useStyles();
   return (
     <div>
+      <LoginPage />
+      <ProfilePage />
       <Home />
     </div>
   );
