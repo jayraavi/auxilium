@@ -1,9 +1,9 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import "./App.css";
-import Home from "./Home";
-import LoginPage from "./LoginPage";
-import ProfilePage from "./ProfilePage";
+import Home from "./views/Home/Home";
+import LoginPage from "./views/LoginPage";
+import ProfilePage from "./views/ProfilePage";
 
 const useStyles = makeStyles({
   root: {
