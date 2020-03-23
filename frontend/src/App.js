@@ -3,6 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import "./App.css";
 import Home from "./Home";
 import LoginPage from "./LoginPage";
+import ProfilePage from "./ProfilePage";
 
 const useStyles = makeStyles({
   root: {
@@ -21,6 +22,7 @@ function App() {
   return (
     <div>
       <LoginPage />
+      <ProfilePage />
       <Home />
     </div>
   );
