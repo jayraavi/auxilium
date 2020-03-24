@@ -5,6 +5,7 @@ import Home from "./views/Home/Home";
 import LoginPage from "./views/LoginPage";
 import ProfilePage from "./views/ProfilePage";
 import TitlebarGridList from "./views/Student/SelectTutors";
+import Types from "./views/Student/SelectClass";
 
 const useStyles = makeStyles({
   root: {
@@ -22,6 +23,7 @@ function App() {
   const classes = useStyles();
   return (
     <div>
+      <Types />
       <TitlebarGridList />
       <LoginPage />
       <ProfilePage />
