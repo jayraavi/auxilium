@@ -4,6 +4,7 @@ import "./App.css";
 import Home from "./views/Home/Home";
 import LoginPage from "./views/LoginPage";
 import ProfilePage from "./views/ProfilePage";
+import TitlebarGridList from "./views/Student/SelectTutors";
 
 const useStyles = makeStyles({
   root: {
@@ -21,6 +22,7 @@ function App() {
   const classes = useStyles();
   return (
     <div>
+      <TitlebarGridList />
       <LoginPage />
       <ProfilePage />
       <Home />
