@@ -1,5 +1,5 @@
 # auxilium
-A service to connect Cal Poly students with able tutors
+A service to connect Cal Poly students with able tutors. This is a work in progress
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
