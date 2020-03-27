@@ -1,0 +1,34 @@
+type Student @model {
+  id: ID!
+  name: String!
+  email: String!
+  cell: String!
+  sessions: [Session] @connection(keyName: "byStudent", fields: ["id"])
+}
+
+type Tutor @model {
+  id: ID!
+  name: String!
+  email: String!
+  cell: String!
+  classes: [Class!]!
+  sessions: [Session] @connection(keyName: "byTutor", fields: ["id"])
+}
+
+type Session
+  @model
+  @key(name: "byStudent", fields: ["studentID"])
+  @key(name: "byTutor", fields: ["tutorID"]) {
+  id: ID!
+  studentID: ID!
+  tutorID: ID!
+  class: Class!
+  student: Student! @connection(fields: ["studentID"])
+  tutor: Tutor! @connection(fields: ["tutorID"])
+}
+
+type Class @model {
+  id: ID!
+  dept: String!
+  num: String!
+}
