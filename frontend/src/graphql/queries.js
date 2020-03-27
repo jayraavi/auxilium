@@ -47,9 +47,13 @@ export const getTutor = /* GraphQL */ `
       email
       cell
       classes {
-        id
-        dept
-        num
+        items {
+          id
+          dept
+          num
+          tutorID
+        }
+        nextToken
       }
       sessions {
         items {
@@ -75,9 +79,7 @@ export const listTutors = /* GraphQL */ `
         email
         cell
         classes {
-          id
-          dept
-          num
+          nextToken
         }
         sessions {
           nextToken
@@ -97,6 +99,13 @@ export const getSession = /* GraphQL */ `
         id
         dept
         num
+        tutorID
+        tutor {
+          id
+          name
+          email
+          cell
+        }
       }
       student {
         id
@@ -113,9 +122,7 @@ export const getSession = /* GraphQL */ `
         email
         cell
         classes {
-          id
-          dept
-          num
+          nextToken
         }
         sessions {
           nextToken
@@ -139,6 +146,7 @@ export const listSessions = /* GraphQL */ `
           id
           dept
           num
+          tutorID
         }
         student {
           id
@@ -163,6 +171,19 @@ export const getClass = /* GraphQL */ `
       id
       dept
       num
+      tutorID
+      tutor {
+        id
+        name
+        email
+        cell
+        classes {
+          nextToken
+        }
+        sessions {
+          nextToken
+        }
+      }
     }
   }
 `;
@@ -177,6 +198,13 @@ export const listClasss = /* GraphQL */ `
         id
         dept
         num
+        tutorID
+        tutor {
+          id
+          name
+          email
+          cell
+        }
       }
       nextToken
     }
