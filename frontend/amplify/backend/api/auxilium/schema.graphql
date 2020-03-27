@@ -11,7 +11,7 @@ type Tutor @model {
   name: String!
   email: String!
   cell: String!
-  classes: [Class!]!
+  classes: [Class!]! @connection(keyName: "byTutor", fields: ["id"])
   sessions: [Session] @connection(keyName: "byTutor", fields: ["id"])
 }
 
@@ -27,8 +27,10 @@ type Session
   tutor: Tutor! @connection(fields: ["tutorID"])
 }
 
-type Class @model {
+type Class @model @key(name: "byTutor", fields: ["tutorID"]) {
   id: ID!
   dept: String!
   num: String!
+  tutorID: ID!
+  tutor: Tutor! @connection(fields: ["tutorID"])
 }

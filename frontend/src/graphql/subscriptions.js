@@ -63,9 +63,13 @@ export const onCreateTutor = /* GraphQL */ `
       email
       cell
       classes {
-        id
-        dept
-        num
+        items {
+          id
+          dept
+          num
+          tutorID
+        }
+        nextToken
       }
       sessions {
         items {
@@ -86,9 +90,13 @@ export const onUpdateTutor = /* GraphQL */ `
       email
       cell
       classes {
-        id
-        dept
-        num
+        items {
+          id
+          dept
+          num
+          tutorID
+        }
+        nextToken
       }
       sessions {
         items {
@@ -109,9 +117,13 @@ export const onDeleteTutor = /* GraphQL */ `
       email
       cell
       classes {
-        id
-        dept
-        num
+        items {
+          id
+          dept
+          num
+          tutorID
+        }
+        nextToken
       }
       sessions {
         items {
@@ -134,6 +146,13 @@ export const onCreateSession = /* GraphQL */ `
         id
         dept
         num
+        tutorID
+        tutor {
+          id
+          name
+          email
+          cell
+        }
       }
       student {
         id
@@ -150,9 +169,7 @@ export const onCreateSession = /* GraphQL */ `
         email
         cell
         classes {
-          id
-          dept
-          num
+          nextToken
         }
         sessions {
           nextToken
@@ -171,6 +188,13 @@ export const onUpdateSession = /* GraphQL */ `
         id
         dept
         num
+        tutorID
+        tutor {
+          id
+          name
+          email
+          cell
+        }
       }
       student {
         id
@@ -187,9 +211,7 @@ export const onUpdateSession = /* GraphQL */ `
         email
         cell
         classes {
-          id
-          dept
-          num
+          nextToken
         }
         sessions {
           nextToken
@@ -208,6 +230,13 @@ export const onDeleteSession = /* GraphQL */ `
         id
         dept
         num
+        tutorID
+        tutor {
+          id
+          name
+          email
+          cell
+        }
       }
       student {
         id
@@ -224,9 +253,7 @@ export const onDeleteSession = /* GraphQL */ `
         email
         cell
         classes {
-          id
-          dept
-          num
+          nextToken
         }
         sessions {
           nextToken
@@ -241,6 +268,19 @@ export const onCreateClass = /* GraphQL */ `
       id
       dept
       num
+      tutorID
+      tutor {
+        id
+        name
+        email
+        cell
+        classes {
+          nextToken
+        }
+        sessions {
+          nextToken
+        }
+      }
     }
   }
 `;
@@ -250,6 +290,19 @@ export const onUpdateClass = /* GraphQL */ `
       id
       dept
       num
+      tutorID
+      tutor {
+        id
+        name
+        email
+        cell
+        classes {
+          nextToken
+        }
+        sessions {
+          nextToken
+        }
+      }
     }
   }
 `;
@@ -259,6 +312,19 @@ export const onDeleteClass = /* GraphQL */ `
       id
       dept
       num
+      tutorID
+      tutor {
+        id
+        name
+        email
+        cell
+        classes {
+          nextToken
+        }
+        sessions {
+          nextToken
+        }
+      }
     }
   }
 `;
