@@ -10,6 +10,13 @@
             "StackName": "amplify-auxilium-master-211757",
             "StackId": "arn:aws:cloudformation:us-east-2:277386752432:stack/amplify-auxilium-master-211757/f377f070-6fe1-11ea-af49-06c94a3c6390",
             "AmplifyAppId": "d6r7tntma6c9v"
+        },
+        "categories": {
+            "auth": {
+                "auxilium6231100f": {
+                    "hostedUIProviderCreds": "[]"
+                }
+            }
         }
     }
 }
