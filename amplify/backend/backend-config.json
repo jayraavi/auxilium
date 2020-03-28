@@ -18,7 +18,7 @@
 		}
 	},
 	"auth": {
-		"auxilium6231100f": {
+		"auxiliumf0e79028": {
 			"service": "Cognito",
 			"providerPlugin": "awscloudformation",
 			"dependsOn": [],

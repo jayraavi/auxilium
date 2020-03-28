@@ -8,6 +8,13 @@ import TitlebarGridList from "./views/Student/SelectTutors";
 import Types from "./views/Student/SelectClass";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import AppAppBar from "./views/Home/modules/views/AppAppBar";
+import Amplify from "aws-amplify";
+import aws_exports from "./aws-exports";
+import { withAuthenticator } from "aws-amplify-react";
+import withRoot from './views/Home/modules/withRoot';
+
+
+Amplify.configure(aws_exports);
 
 const useStyles = makeStyles({
   root: {
@@ -39,4 +46,4 @@ function App() {
   );
 }
 
-export default App;
+export default withRoot(withAuthenticator(App, true));
