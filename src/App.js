@@ -11,8 +11,9 @@ import AppAppBar from "./views/Home/modules/views/AppAppBar";
 import Amplify from "aws-amplify";
 import aws_exports from "./aws-exports";
 import { withAuthenticator } from "aws-amplify-react";
-import withRoot from './views/Home/modules/withRoot';
-
+import withRoot from "./views/Home/modules/withRoot";
+import SignIn from "./views/Home/SignIn";
+import SignUp from "./views/Home/SignUp";
 
 Amplify.configure(aws_exports);
 
@@ -36,6 +37,8 @@ function App() {
         <AppAppBar />
         <Switch>
           <Route path="/" exact component={Home} />
+          <Route path="/sign-in" component={SignIn} />
+          <Route path="/sign-up" component={SignUp} />
           <Route path="/login" component={LoginPage} />
           <Route path="/tutor" component={ProfilePage} />
           <Route path="/selectClass" component={Types} />
