@@ -47,9 +47,9 @@ function SignUp() {
     return errors;
   };
 
-  const handleSubmit = () => {
-    setSent(true);
-  };
+  // const handleSubmit = () => {
+  //   setSent(true);
+  // };
 
   return (
     <React.Fragment>
@@ -65,12 +65,14 @@ function SignUp() {
           </Typography>
         </React.Fragment>
         <Form
-          onSubmit={handleSubmit}
+          onSubmit={formObj => {
+            alert(formObj.password);
+          }}
           subscription={{ submitting: true }}
           validate={validate}
         >
-          {({ handleSubmit2, submitting }) => (
-            <form onSubmit={handleSubmit2} className={classes.form} noValidate>
+          {({ handleSubmit }) => (
+            <form onSubmit={handleSubmit}>
               <Grid container spacing={2}>
                 <Grid item xs={12} sm={6}>
                   <Field
@@ -97,7 +99,7 @@ function SignUp() {
               <Field
                 autoComplete="email"
                 component={RFTextField}
-                disabled={submitting || sent}
+                // disabled={submitting || sent}
                 fullWidth
                 label="Email"
                 margin="normal"
@@ -107,7 +109,7 @@ function SignUp() {
               <Field
                 fullWidth
                 component={RFTextField}
-                disabled={submitting || sent}
+                // disabled={submitting || sent}
                 required
                 name="password"
                 autoComplete="current-password"
@@ -126,11 +128,11 @@ function SignUp() {
               </FormSpy>
               <FormButton
                 className={classes.button}
-                disabled={submitting || sent}
+                // disabled={submitting || sent}
                 color="secondary"
                 fullWidth
               >
-                {submitting || sent ? "In progress…" : "Sign Up"}
+                {"Sign Up"}
               </FormButton>
             </form>
           )}

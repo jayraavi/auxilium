@@ -43,12 +43,13 @@ function SignIn() {
     return errors;
   };
 
-  const handleSubmit = () => {
-    setSent(true);
-  };
+  // const handleSubmit = () => {
+  //   setSent(true);
+  // };
 
   return (
     <React.Fragment>
+      <AppAppBar />
       <AppForm>
         <React.Fragment>
           <Typography variant="h3" gutterBottom marked="center" align="center">
@@ -56,27 +57,25 @@ function SignIn() {
           </Typography>
           <Typography variant="body2" align="center">
             {"Not a member yet? "}
-            <Link
-              href="/sign-up/"
-              align="center"
-              underline="always"
-            >
+            <Link href="/sign-up/" align="center" underline="always">
               Sign Up here
             </Link>
           </Typography>
         </React.Fragment>
         <Form
-          onSubmit={handleSubmit}
+          onSubmit={formObj => {
+            alert(formObj.password);
+          }}
           subscription={{ submitting: true }}
           validate={validate}
         >
-          {({ handleSubmit2, submitting }) => (
-            <form onSubmit={handleSubmit2} className={classes.form} noValidate>
+          {({ handleSubmit }) => (
+            <form onSubmit={handleSubmit}>
               <Field
                 autoComplete="email"
                 autoFocus
                 component={RFTextField}
-                disabled={submitting || sent}
+                // disabled={submitting || sent}
                 fullWidth
                 label="Email"
                 margin="normal"
@@ -88,7 +87,7 @@ function SignIn() {
                 fullWidth
                 size="large"
                 component={RFTextField}
-                disabled={submitting || sent}
+                // disabled={submitting || sent}
                 required
                 name="password"
                 autoComplete="current-password"
@@ -107,12 +106,12 @@ function SignIn() {
               </FormSpy>
               <FormButton
                 className={classes.button}
-                disabled={submitting || sent}
+                // disabled={submitting || sent}
                 size="large"
                 color="secondary"
                 fullWidth
               >
-                {submitting || sent ? "In progress…" : "Sign In"}
+                {"Sign In"}
               </FormButton>
             </form>
           )}
