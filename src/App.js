@@ -6,6 +6,8 @@ import LoginPage from "./views/LoginPage";
 import ProfilePage from "./views/ProfilePage";
 import TitlebarGridList from "./views/Student/SelectTutors";
 import Types from "./views/Student/SelectClass";
+import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import AppAppBar from "./views/Home/modules/views/AppAppBar";
 
 const useStyles = makeStyles({
   root: {
@@ -22,13 +24,18 @@ const useStyles = makeStyles({
 function App() {
   const classes = useStyles();
   return (
-    <div>
-      <Types />
-      <TitlebarGridList />
-      <LoginPage />
-      <ProfilePage />
-      <Home />
-    </div>
+    <Router>
+      <div>
+        <AppAppBar />
+        <Switch>
+          <Route path="/" exact component={Home} />
+          <Route path="/login" component={LoginPage} />
+          <Route path="/tutor" component={ProfilePage} />
+          <Route path="/selectClass" component={Types} />
+          <Route path="/viewTutors" component={TitlebarGridList} />
+        </Switch>
+      </div>
+    </Router>
   );
 }
 
