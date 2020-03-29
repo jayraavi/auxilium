@@ -45,17 +45,19 @@ function SignIn() {
   };
 
   const handleSubmit2 = formObj => {
-    alert(formObj.password);
     Auth.signIn({
       username: formObj.email,
       password: formObj.password
     })
-      .then(() => console.log("Signed In"))
-      .catch(err => console.log(err));
-    Auth.confirmSignIn(formObj.email)
-      .then(() => console.log("confirmed sign in"))
-      .catch(err => console.log(err));
-    setSignedIn(true);
+      .then(() => setSignedIn(true), console.log("Signed In"))
+      .catch(
+        err => setSignedIn(false),
+        err => alert(err.message)
+      );
+    // Auth.confirmSignIn(formObj.email)
+    //   .then(() => console.log("confirmed sign in"))
+    //   .catch(err => console.log(err));
+    // setSignedIn(true);
   };
 
   if (signedIn) {

@@ -50,7 +50,6 @@ function SignUp() {
   };
 
   const handleSubmit2 = formObj => {
-    alert(formObj.password);
     if (!signedUp) {
       Auth.signUp({
         username: formObj.email,
@@ -60,9 +59,18 @@ function SignUp() {
           phone_number: formObj.number
         }
       })
-        .then(() => console.log("Signed Up"))
-        .catch(err => console.log(err));
-      setSignedUp(true);
+        .then(
+          () => {
+            setSignedUp(true);
+          },
+          () => console.log("signed up successfully")
+        )
+        .catch(
+          err => {
+            setSignedUp(false);
+          },
+          err => console.log(err.message)
+        );
     } else {
       Auth.confirmSignUp(formObj.email, formObj.code)
         .then(() => console.log("confirmed sign up"))
