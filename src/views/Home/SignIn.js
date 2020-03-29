@@ -12,6 +12,7 @@ import { email, required } from "./modules/form/validation";
 import RFTextField from "./modules/form/RFTextField";
 import FormButton from "./modules/form/FormButton";
 import FormFeedback from "./modules/form/FormFeedback";
+import { Auth } from "aws-amplify";
 
 const useStyles = makeStyles(theme => ({
   form: {
@@ -28,7 +29,7 @@ const useStyles = makeStyles(theme => ({
 
 function SignIn() {
   const classes = useStyles();
-  const [sent, setSent] = React.useState(false);
+  const [signedIn, setSignedIn] = React.useState(false);
 
   const validate = values => {
     const errors = required(["email", "password"], values);
@@ -43,9 +44,23 @@ function SignIn() {
     return errors;
   };
 
-  // const handleSubmit = () => {
-  //   setSent(true);
-  // };
+  const handleSubmit2 = formObj => {
+    alert(formObj.password);
+    Auth.signIn({
+      username: formObj.email,
+      password: formObj.password
+    })
+      .then(() => console.log("Signed In"))
+      .catch(err => console.log(err));
+    Auth.confirmSignIn(formObj.email)
+      .then(() => console.log("confirmed sign in"))
+      .catch(err => console.log(err));
+    setSignedIn(true);
+  };
+
+  if (signedIn) {
+    return <h1> You have signed in :) </h1>;
+  }
 
   return (
     <React.Fragment>
@@ -63,9 +78,7 @@ function SignIn() {
           </Typography>
         </React.Fragment>
         <Form
-          onSubmit={formObj => {
-            alert(formObj.password);
-          }}
+          onSubmit={handleSubmit2}
           subscription={{ submitting: true }}
           validate={validate}
         >
@@ -75,7 +88,7 @@ function SignIn() {
                 autoComplete="email"
                 autoFocus
                 component={RFTextField}
-                // disabled={submitting || sent}
+                // disabled={submitting || signedIn}
                 fullWidth
                 label="Email"
                 margin="normal"
@@ -87,7 +100,7 @@ function SignIn() {
                 fullWidth
                 size="large"
                 component={RFTextField}
-                // disabled={submitting || sent}
+                // disabled={submitting || signedIn}
                 required
                 name="password"
                 autoComplete="current-password"
@@ -106,7 +119,7 @@ function SignIn() {
               </FormSpy>
               <FormButton
                 className={classes.button}
-                // disabled={submitting || sent}
+                // disabled={submitting || signedIn}
                 size="large"
                 color="secondary"
                 fullWidth

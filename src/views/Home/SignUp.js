@@ -13,6 +13,7 @@ import { email, required } from "./modules/form/validation";
 import RFTextField from "./modules/form/RFTextField";
 import FormButton from "./modules/form/FormButton";
 import FormFeedback from "./modules/form/FormFeedback";
+import { Auth } from "aws-amplify";
 
 const useStyles = makeStyles(theme => ({
   form: {
@@ -29,7 +30,8 @@ const useStyles = makeStyles(theme => ({
 
 function SignUp() {
   const classes = useStyles();
-  const [sent, setSent] = React.useState(false);
+  const [signedUp, setSignedUp] = React.useState(false);
+  const [confirmationCode, setConfirmationCode] = React.useState();
 
   const validate = values => {
     const errors = required(
@@ -47,100 +49,202 @@ function SignUp() {
     return errors;
   };
 
-  // const handleSubmit = () => {
-  //   setSent(true);
-  // };
+  const handleSubmit2 = formObj => {
+    alert(formObj.password);
+    if (!signedUp) {
+      Auth.signUp({
+        username: formObj.email,
+        password: formObj.password,
+        attributes: {
+          email: formObj.email,
+          phone_number: formObj.number
+        }
+      })
+        .then(() => console.log("Signed Up"))
+        .catch(err => console.log(err));
+      setSignedUp(true);
+    } else {
+      Auth.confirmSignUp(formObj.email, formObj.code)
+        .then(() => console.log("confirmed sign up"))
+        .catch(err => console.log(err));
+    }
+  };
 
-  return (
-    <React.Fragment>
-      <AppForm>
-        <React.Fragment>
-          <Typography variant="h3" gutterBottom marked="center" align="center">
-            Sign Up
-          </Typography>
-          <Typography variant="body2" align="center">
-            <Link href="/sign-in/" underline="always">
-              Already have an account?
-            </Link>
-          </Typography>
-        </React.Fragment>
-        <Form
-          onSubmit={formObj => {
-            alert(formObj.password);
-          }}
-          subscription={{ submitting: true }}
-          validate={validate}
-        >
-          {({ handleSubmit }) => (
-            <form onSubmit={handleSubmit}>
-              <Grid container spacing={2}>
-                <Grid item xs={12} sm={6}>
-                  <Field
-                    autoFocus
-                    component={RFTextField}
-                    autoComplete="fname"
-                    fullWidth
-                    label="First name"
-                    name="firstName"
-                    required
-                  />
+  if (!signedUp) {
+    return (
+      <React.Fragment>
+        <AppForm>
+          <React.Fragment>
+            <Typography
+              variant="h3"
+              gutterBottom
+              marked="center"
+              align="center"
+            >
+              Sign Up
+            </Typography>
+            <Typography variant="body2" align="center">
+              <Link href="/sign-in/" underline="always">
+                Already have an account?
+              </Link>
+            </Typography>
+          </React.Fragment>
+          <Form
+            onSubmit={handleSubmit2}
+            subscription={{ submitting: true }}
+            validate={validate}
+          >
+            {({ handleSubmit }) => (
+              <form onSubmit={handleSubmit}>
+                <Grid container spacing={2}>
+                  <Grid item xs={12} sm={6}>
+                    <Field
+                      autoFocus
+                      component={RFTextField}
+                      autoComplete="fname"
+                      fullWidth
+                      label="First name"
+                      name="firstName"
+                      required
+                    />
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <Field
+                      component={RFTextField}
+                      autoComplete="lname"
+                      fullWidth
+                      label="Last name"
+                      name="lastName"
+                      required
+                    />
+                  </Grid>
                 </Grid>
-                <Grid item xs={12} sm={6}>
-                  <Field
-                    component={RFTextField}
-                    autoComplete="lname"
-                    fullWidth
-                    label="Last name"
-                    name="lastName"
-                    required
-                  />
-                </Grid>
-              </Grid>
-              <Field
-                autoComplete="email"
-                component={RFTextField}
-                // disabled={submitting || sent}
-                fullWidth
-                label="Email"
-                margin="normal"
-                name="email"
-                required
-              />
-              <Field
-                fullWidth
-                component={RFTextField}
-                // disabled={submitting || sent}
-                required
-                name="password"
-                autoComplete="current-password"
-                label="Password"
-                type="password"
-                margin="normal"
-              />
-              <FormSpy subscription={{ submitError: true }}>
-                {({ submitError }) =>
-                  submitError ? (
-                    <FormFeedback className={classes.feedback} error>
-                      {submitError}
-                    </FormFeedback>
-                  ) : null
-                }
-              </FormSpy>
-              <FormButton
-                className={classes.button}
-                // disabled={submitting || sent}
-                color="secondary"
-                fullWidth
-              >
-                {"Sign Up"}
-              </FormButton>
-            </form>
-          )}
-        </Form>
-      </AppForm>
-      <AppFooter />
-    </React.Fragment>
-  );
+                <Field
+                  autoComplete="email"
+                  component={RFTextField}
+                  // disabled={submitting || signedUp}
+                  fullWidth
+                  label="Email"
+                  margin="normal"
+                  name="email"
+                  required
+                />
+                <Field
+                  autoComplete="xxx-xxx-xxx"
+                  component={RFTextField}
+                  // disabled={submitting || signedUp}
+                  fullWidth
+                  label="Phone Number"
+                  margin="normal"
+                  name="number"
+                  required
+                />
+                <Field
+                  fullWidth
+                  component={RFTextField}
+                  // disabled={submitting || signedUp}
+                  required
+                  name="password"
+                  autoComplete="current-password"
+                  label="Password"
+                  type="password"
+                  margin="normal"
+                />
+                <FormSpy subscription={{ submitError: true }}>
+                  {({ submitError }) =>
+                    submitError ? (
+                      <FormFeedback className={classes.feedback} error>
+                        {submitError}
+                      </FormFeedback>
+                    ) : null
+                  }
+                </FormSpy>
+                <FormButton
+                  className={classes.button}
+                  // disabled={submitting || signedUp}
+                  color="secondary"
+                  fullWidth
+                >
+                  {"Sign Up"}
+                </FormButton>
+              </form>
+            )}
+          </Form>
+        </AppForm>
+        <AppFooter />
+      </React.Fragment>
+    );
+  } else {
+    return (
+      <React.Fragment>
+        <AppForm>
+          <React.Fragment>
+            <Typography
+              variant="h3"
+              gutterBottom
+              marked="center"
+              align="center"
+            >
+              Check your email
+            </Typography>
+            <Typography variant="body2" align="center">
+              <Link href="/sign-in/" underline="always">
+                Already have an account?
+              </Link>
+            </Typography>
+          </React.Fragment>
+          <Form
+            onSubmit={handleSubmit2}
+            subscription={{ submitting: true }}
+            validate={validate}
+          >
+            {({ handleSubmit }) => (
+              <form onSubmit={handleSubmit}>
+                <Field
+                  autoComplete="email"
+                  component={RFTextField}
+                  // disabled={submitting || signedUp}
+                  fullWidth
+                  label="Email"
+                  margin="normal"
+                  name="email"
+                  required
+                />
+                <Field
+                  autoComplete="xxx-xxx-xxx"
+                  component={RFTextField}
+                  // disabled={submitting || signedUp}
+                  fullWidth
+                  label="Confirmation Code"
+                  margin="normal"
+                  name="code"
+                  required
+                />
+                <FormSpy subscription={{ submitError: true }}>
+                  {({ submitError }) =>
+                    submitError ? (
+                      <FormFeedback className={classes.feedback} error>
+                        {submitError}
+                      </FormFeedback>
+                    ) : null
+                  }
+                </FormSpy>
+                <FormButton
+                  className={classes.button}
+                  // disabled={submitting || signedUp}
+                  color="secondary"
+                  fullWidth
+                >
+                  {"Confirm"}
+                </FormButton>
+              </form>
+            )}
+          </Form>
+        </AppForm>
+        <AppFooter />
+      </React.Fragment>
+    );
+  }
 }
 
 export default withRoot(SignUp);
