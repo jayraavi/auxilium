@@ -1,37 +1,41 @@
-import withRoot from './modules/withRoot';
+import withRoot from "./modules/withRoot";
 // --- Post bootstrap -----
-import React from 'react';
-import { Field, Form, FormSpy } from 'react-final-form';
-import { makeStyles } from '@material-ui/core/styles';
-import Link from '@material-ui/core/Link';
-import Typography from './modules/components/Typography';
-import AppFooter from './modules/views/AppFooter';
-import AppAppBar from './modules/views/AppAppBar';
-import AppForm from './modules/views/AppForm';
-import { email, required } from './modules/form/validation';
-import RFTextField from './modules/form/RFTextField';
-import FormButton from './modules/form/FormButton';
-import FormFeedback from './modules/form/FormFeedback';
+import React from "react";
+import { Field, Form, FormSpy } from "react-final-form";
+import { makeStyles } from "@material-ui/core/styles";
+import Link from "@material-ui/core/Link";
+import Typography from "./modules/components/Typography";
+import AppFooter from "./modules/views/AppFooter";
+import AppAppBar from "./modules/views/AppAppBar";
+import AppForm from "./modules/views/AppForm";
+import { email, required } from "./modules/form/validation";
+import RFTextField from "./modules/form/RFTextField";
+import FormButton from "./modules/form/FormButton";
+import FormFeedback from "./modules/form/FormFeedback";
+import { Auth } from "aws-amplify";
+import { appHistory } from "../../App";
 
-const useStyles = makeStyles((theme) => ({
+console.log(localStorage.getItem("userLoggedIn"));
+
+const useStyles = makeStyles(theme => ({
   form: {
-    marginTop: theme.spacing(6),
+    marginTop: theme.spacing(6)
   },
   button: {
     marginTop: theme.spacing(3),
-    marginBottom: theme.spacing(2),
+    marginBottom: theme.spacing(2)
   },
   feedback: {
-    marginTop: theme.spacing(2),
-  },
+    marginTop: theme.spacing(2)
+  }
 }));
 
-function SignIn() {
+function SignIn(props) {
   const classes = useStyles();
-  const [sent, setSent] = React.useState(false);
+  const [signedIn, setSignedIn] = React.useState(false);
 
-  const validate = (values) => {
-    const errors = required(['email', 'password'], values);
+  const validate = values => {
+    const errors = required(["email", "password"], values);
 
     if (!errors.email) {
       const emailError = email(values.email, values);
@@ -43,82 +47,107 @@ function SignIn() {
     return errors;
   };
 
-  const handleSubmit = () => {
-    setSent(true);
+  const handleSubmit2 = formObj => {
+    Auth.signIn({
+      username: formObj.email,
+      password: formObj.password
+    })
+      .then(() => setSignedIn(true), console.log("Signed In"))
+      .catch(
+        err => setSignedIn(false),
+        err => alert(err.message)
+      );
+    localStorage.setItem("userLoggedIn", formObj.email);
   };
 
-  return (
-    <React.Fragment>
-      <AppAppBar />
-      <AppForm>
-        <React.Fragment>
-          <Typography variant="h3" gutterBottom marked="center" align="center">
-            Sign In
-          </Typography>
-          <Typography variant="body2" align="center">
-            {'Not a member yet? '}
-            <Link href="/premium-themes/onepirate/sign-up/" align="center" underline="always">
-              Sign Up here
+  if (signedIn) {
+    Auth.currentAuthenticatedUser({
+      bypassCache: false // Optional, By default is false. If set to true, this call will send a request to Cognito to get the latest user data
+    })
+      .then(user => console.log(user))
+      .catch(err => console.log(err));
+    appHistory.push("/");
+    appHistory.goBack();
+    window.location.reload(false);
+  } else {
+    return (
+      <React.Fragment>
+        <AppForm>
+          <React.Fragment>
+            <Typography
+              variant="h3"
+              gutterBottom
+              marked="center"
+              align="center"
+            >
+              Sign In
+            </Typography>
+            <Typography variant="body2" align="center">
+              {"Not a member yet? "}
+              <Link href="/sign-up/" align="center" underline="always">
+                Sign Up here
+              </Link>
+            </Typography>
+          </React.Fragment>
+          <Form
+            onSubmit={handleSubmit2}
+            subscription={{ submitting: true }}
+            validate={validate}
+          >
+            {({ handleSubmit }) => (
+              <form onSubmit={handleSubmit}>
+                <Field
+                  autoComplete="email"
+                  autoFocus
+                  component={RFTextField}
+                  fullWidth
+                  label="Email"
+                  margin="normal"
+                  name="email"
+                  required
+                  size="large"
+                />
+                <Field
+                  fullWidth
+                  size="large"
+                  component={RFTextField}
+                  required
+                  name="password"
+                  autoComplete="current-password"
+                  label="Password"
+                  type="password"
+                  margin="normal"
+                />
+                <FormSpy subscription={{ submitError: true }}>
+                  {({ submitError }) =>
+                    submitError ? (
+                      <FormFeedback className={classes.feedback} error>
+                        {submitError}
+                      </FormFeedback>
+                    ) : null
+                  }
+                </FormSpy>
+                <FormButton
+                  className={classes.button}
+                  size="large"
+                  color="secondary"
+                  fullWidth
+                >
+                  {"Sign In"}
+                </FormButton>
+              </form>
+            )}
+          </Form>
+          <Typography align="center">
+            <Link underline="always" href="/">
+              Forgot password?
             </Link>
           </Typography>
-        </React.Fragment>
-        <Form onSubmit={handleSubmit} subscription={{ submitting: true }} validate={validate}>
-          {({ handleSubmit2, submitting }) => (
-            <form onSubmit={handleSubmit2} className={classes.form} noValidate>
-              <Field
-                autoComplete="email"
-                autoFocus
-                component={RFTextField}
-                disabled={submitting || sent}
-                fullWidth
-                label="Email"
-                margin="normal"
-                name="email"
-                required
-                size="large"
-              />
-              <Field
-                fullWidth
-                size="large"
-                component={RFTextField}
-                disabled={submitting || sent}
-                required
-                name="password"
-                autoComplete="current-password"
-                label="Password"
-                type="password"
-                margin="normal"
-              />
-              <FormSpy subscription={{ submitError: true }}>
-                {({ submitError }) =>
-                  submitError ? (
-                    <FormFeedback className={classes.feedback} error>
-                      {submitError}
-                    </FormFeedback>
-                  ) : null
-                }
-              </FormSpy>
-              <FormButton
-                className={classes.button}
-                disabled={submitting || sent}
-                size="large"
-                color="secondary"
-                fullWidth
-              >
-                {submitting || sent ? 'In progress…' : 'Sign In'}
-              </FormButton>
-            </form>
-          )}
-        </Form>
-        <Typography align="center">
-          <Link underline="always" href="/premium-themes/onepirate/forgot-password/">
-            Forgot password?
-          </Link>
-        </Typography>
-      </AppForm>
-      <AppFooter />
-    </React.Fragment>
-  );
+        </AppForm>
+        <AppFooter />
+      </React.Fragment>
+    );
+  }
 }
 
 export default withRoot(SignIn);

@@ -5,6 +5,8 @@ import { withStyles } from "@material-ui/core/styles";
 import Link from "@material-ui/core/Link";
 import AppBar from "../components/AppBar";
 import Toolbar, { styles as toolbarStyles } from "../components/Toolbar";
+import { LoggedInContext } from "../../../../App";
+import { Auth } from "aws-amplify";
 
 const styles = theme => ({
   title: {
@@ -35,9 +37,20 @@ const styles = theme => ({
   }
 });
 
+const loggedIn = localStorage.getItem("userLoggedIn");
+
+const handleSignOut = () => {
+  console.log("yo");
+  if (loggedIn !== "") {
+    Auth.signOut()
+      .then(data => console.log(data))
+      .catch(err => console.log(err));
+    localStorage.setItem("userLoggedIn", "");
+  }
+};
+
 function AppAppBar(props) {
   const { classes } = props;
-
   return (
     <div>
       <AppBar position="fixed">
@@ -48,7 +61,7 @@ function AppAppBar(props) {
             underline="none"
             color="inherit"
             className={classes.title}
-            href="/premium-themes/onepirate/"
+            href="/"
           >
             {"Auxilium"}
           </Link>
@@ -58,17 +71,20 @@ function AppAppBar(props) {
               variant="h6"
               underline="none"
               className={classes.rightLink}
-              href="/premium-themes/onepirate/sign-in/"
+              onClick={handleSignOut}
+              href={props.curState !== "" ? "/" : "/sign-in/"}
             >
-              {"Sign In"}
+              {props.curState !== "" ? "Sign Out" : "Sign In"}
             </Link>
             <Link
               variant="h6"
               underline="none"
               className={clsx(classes.rightLink, classes.linkSecondary)}
-              href="/premium-themes/onepirate/sign-up/"
+              href={props.curState !== "" ? "/" : "/sign-up/"}
             >
-              {"Sign Up"}
+              {props.curState !== ""
+                ? "Hello, " + localStorage.getItem("userLoggedIn")
+                : "Sign Up"}
             </Link>
           </div>
         </Toolbar>
