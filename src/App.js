@@ -6,7 +6,12 @@ import LoginPage from "./views/LoginPage";
 import ProfilePage from "./views/ProfilePage";
 import TitlebarGridList from "./views/Student/SelectTutors";
 import Types from "./views/Student/SelectClass";
-import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect
+} from "react-router-dom";
 import AppAppBar from "./views/Home/modules/views/AppAppBar";
 import Amplify, { Auth } from "aws-amplify";
 import aws_exports from "./aws-exports";
@@ -79,6 +84,7 @@ function App() {
               <Route path="/tutor" component={ProfilePage} />
               <Route path="/selectClass" component={Types} />
               <Route path="/viewTutors" component={TitlebarGridList} />
+              <Route render={() => <Redirect to={{ pathname: "/" }} />} />
             </Switch>
           </UserContext.Provider>
         </LoggedInContext.Provider>
