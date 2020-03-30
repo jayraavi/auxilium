@@ -14,6 +14,8 @@ import RFTextField from "./modules/form/RFTextField";
 import FormButton from "./modules/form/FormButton";
 import FormFeedback from "./modules/form/FormFeedback";
 import { Auth } from "aws-amplify";
+import { appHistory } from "../../App";
+import SignIn from "./SignIn";
 
 const useStyles = makeStyles(theme => ({
   form: {
@@ -31,6 +33,8 @@ const useStyles = makeStyles(theme => ({
 function SignUp() {
   const classes = useStyles();
   const [signedUp, setSignedUp] = React.useState(false);
+  const [confirmed, setConfirmed] = React.useState(false);
+  const [email, setEmail] = React.useState("");
   const [confirmationCode, setConfirmationCode] = React.useState();
 
   const validate = values => {
@@ -39,12 +43,12 @@ function SignUp() {
       values
     );
 
-    if (!errors.email) {
-      const emailError = email(values.email, values);
-      if (emailError) {
-        errors.email = email(values.email, values);
-      }
-    }
+    // if (!errors.email) {
+    //   const emailError = email(values.email, values);
+    //   if (emailError) {
+    //     errors.email = email(values.email, values);
+    //   }
+    // }
 
     return errors;
   };
@@ -73,12 +77,22 @@ function SignUp() {
         );
     } else {
       Auth.confirmSignUp(formObj.email, formObj.code)
-        .then(() => console.log("confirmed sign up"))
+        .then(() => setConfirmed(true), console.log("confirmed"))
         .catch(err => console.log(err));
+      // localStorage.setItem("userLoggedIn", formObj.email);
+      // Auth.signIn({
+      //   username: formObj.email,
+      //   password: formObj.password
+      // })
+      //   .then(() => console.log("Signed In"))
+      //   .catch(err => alert(err.message));
+      // setEmail(formObj.email);
     }
   };
 
-  if (!signedUp) {
+  if (confirmed) {
+    return <SignIn />;
+  } else if (!signedUp) {
     return (
       <React.Fragment>
         <AppForm>
@@ -130,7 +144,6 @@ function SignUp() {
                 <Field
                   autoComplete="email"
                   component={RFTextField}
-                  // disabled={submitting || signedUp}
                   fullWidth
                   label="Email"
                   margin="normal"
@@ -140,7 +153,6 @@ function SignUp() {
                 <Field
                   autoComplete="xxx-xxx-xxx"
                   component={RFTextField}
-                  // disabled={submitting || signedUp}
                   fullWidth
                   label="Phone Number"
                   margin="normal"
@@ -150,7 +162,6 @@ function SignUp() {
                 <Field
                   fullWidth
                   component={RFTextField}
-                  // disabled={submitting || signedUp}
                   required
                   name="password"
                   autoComplete="current-password"
@@ -169,7 +180,6 @@ function SignUp() {
                 </FormSpy>
                 <FormButton
                   className={classes.button}
-                  // disabled={submitting || signedUp}
                   color="secondary"
                   fullWidth
                 >

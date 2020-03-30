@@ -1,6 +1,6 @@
 import withRoot from "./modules/withRoot";
 // --- Post bootstrap -----
-import React, { useContext, useMemo } from "react";
+import React from "react";
 import { Field, Form, FormSpy } from "react-final-form";
 import { makeStyles } from "@material-ui/core/styles";
 import Link from "@material-ui/core/Link";
@@ -13,9 +13,7 @@ import RFTextField from "./modules/form/RFTextField";
 import FormButton from "./modules/form/FormButton";
 import FormFeedback from "./modules/form/FormFeedback";
 import { Auth } from "aws-amplify";
-import { LoggedInContext, appHistory } from "../../App";
-import Home from "../Home/Home";
-import { Redirect } from "react-router-dom";
+import { appHistory } from "../../App";
 
 console.log(localStorage.getItem("userLoggedIn"));
 
@@ -35,7 +33,6 @@ const useStyles = makeStyles(theme => ({
 function SignIn(props) {
   const classes = useStyles();
   const [signedIn, setSignedIn] = React.useState(false);
-  const { userLoggedIn, setUserLoggedIn } = useContext(LoggedInContext);
 
   const validate = values => {
     const errors = required(["email", "password"], values);
@@ -60,14 +57,7 @@ function SignIn(props) {
         err => setSignedIn(false),
         err => alert(err.message)
       );
-    localStorage.setItem("user", formObj.email);
-    props.setUserLoggedIn(true);
-    localStorage.setItem("userLoggedIn", true);
-
-    // Auth.confirmSignIn(formObj.email)
-    //   .then(() => console.log("confirmed sign in"))
-    //   .catch(err => console.log(err));
-    // setSignedIn(true);
+    localStorage.setItem("userLoggedIn", formObj.email);
   };
 
   if (signedIn) {
@@ -76,11 +66,9 @@ function SignIn(props) {
     })
       .then(user => console.log(user))
       .catch(err => console.log(err));
-    // setUserLoggedIn(true);
     appHistory.push("/");
     appHistory.goBack();
     window.location.reload(false);
-    // return <Redirect push to="/"></Redirect>;
   } else {
     return (
       <React.Fragment>
@@ -112,7 +100,6 @@ function SignIn(props) {
                   autoComplete="email"
                   autoFocus
                   component={RFTextField}
-                  // disabled={submitting || signedIn}
                   fullWidth
                   label="Email"
                   margin="normal"
@@ -124,7 +111,6 @@ function SignIn(props) {
                   fullWidth
                   size="large"
                   component={RFTextField}
-                  // disabled={submitting || signedIn}
                   required
                   name="password"
                   autoComplete="current-password"
@@ -143,7 +129,6 @@ function SignIn(props) {
                 </FormSpy>
                 <FormButton
                   className={classes.button}
-                  // disabled={submitting || signedIn}
                   size="large"
                   color="secondary"
                   fullWidth
@@ -154,10 +139,7 @@ function SignIn(props) {
             )}
           </Form>
           <Typography align="center">
-            <Link
-              underline="always"
-              href="/premium-themes/onepirate/forgot-password/"
-            >
+            <Link underline="always" href="/">
               Forgot password?
             </Link>
           </Typography>

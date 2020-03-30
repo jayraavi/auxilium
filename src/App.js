@@ -51,18 +51,15 @@ const useStyles = makeStyles({
 function App() {
   const [userLoggedIn, setUserLoggedIn] = useState(false);
   const [currentUser, setCurrentUser] = useState("");
-  // const userValue = useMemo(() => ({ currentUser, setCurrentUser }), [
-  //   currentUser,
-  //   setCurrentUser
-  // ]);
-  // const loggedInValue = useMemo(() => ({ userLoggedIn, setUserLoggedIn }), [
-  //   userLoggedIn,
-  //   setUserLoggedIn
-  // ]);
-  const loggedInValue = { userLoggedIn, setUserLoggedIn };
-  const userValue = { currentUser, setCurrentUser };
+  const userValue = useMemo(() => ({ currentUser, setCurrentUser }), [
+    currentUser,
+    setCurrentUser
+  ]);
+  const loggedInValue = useMemo(() => ({ userLoggedIn, setUserLoggedIn }), [
+    userLoggedIn,
+    setUserLoggedIn
+  ]);
   const classes = useStyles();
-  console.log(loggedInValue);
   return (
     <Router history={appHistory}>
       <div>
