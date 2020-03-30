@@ -1,6 +1,6 @@
 import withRoot from "./modules/withRoot";
 // --- Post bootstrap -----
-import React from "react";
+import React, { useContext, useMemo } from "react";
 import { Field, Form, FormSpy } from "react-final-form";
 import { makeStyles } from "@material-ui/core/styles";
 import Link from "@material-ui/core/Link";
@@ -13,6 +13,9 @@ import RFTextField from "./modules/form/RFTextField";
 import FormButton from "./modules/form/FormButton";
 import FormFeedback from "./modules/form/FormFeedback";
 import { Auth } from "aws-amplify";
+import { LoggedInContext } from "../../App";
+
+console.log(localStorage.getItem("userLoggedIn"));
 
 const useStyles = makeStyles(theme => ({
   form: {
@@ -27,9 +30,10 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-function SignIn() {
+function SignIn(props) {
   const classes = useStyles();
   const [signedIn, setSignedIn] = React.useState(false);
+  const { userLoggedIn, setUserLoggedIn } = useContext(LoggedInContext);
 
   const validate = values => {
     const errors = required(["email", "password"], values);
@@ -54,6 +58,10 @@ function SignIn() {
         err => setSignedIn(false),
         err => alert(err.message)
       );
+    localStorage.setItem("user", formObj.email);
+    props.setUserLoggedIn(true);
+    localStorage.setItem("userLoggedIn", true);
+
     // Auth.confirmSignIn(formObj.email)
     //   .then(() => console.log("confirmed sign in"))
     //   .catch(err => console.log(err));
@@ -61,88 +69,93 @@ function SignIn() {
   };
 
   if (signedIn) {
+    // setUserLoggedIn(true);
     return <h1> You have signed in :) </h1>;
-  }
-
-  return (
-    <React.Fragment>
-      <AppAppBar />
-      <AppForm>
-        <React.Fragment>
-          <Typography variant="h3" gutterBottom marked="center" align="center">
-            Sign In
-          </Typography>
-          <Typography variant="body2" align="center">
-            {"Not a member yet? "}
-            <Link href="/sign-up/" align="center" underline="always">
-              Sign Up here
+  } else {
+    return (
+      <React.Fragment>
+        <AppForm>
+          <React.Fragment>
+            <Typography
+              variant="h3"
+              gutterBottom
+              marked="center"
+              align="center"
+            >
+              Sign In
+            </Typography>
+            <Typography variant="body2" align="center">
+              {"Not a member yet? "}
+              <Link href="/sign-up/" align="center" underline="always">
+                Sign Up here
+              </Link>
+            </Typography>
+          </React.Fragment>
+          <Form
+            onSubmit={handleSubmit2}
+            subscription={{ submitting: true }}
+            validate={validate}
+          >
+            {({ handleSubmit }) => (
+              <form onSubmit={handleSubmit}>
+                <Field
+                  autoComplete="email"
+                  autoFocus
+                  component={RFTextField}
+                  // disabled={submitting || signedIn}
+                  fullWidth
+                  label="Email"
+                  margin="normal"
+                  name="email"
+                  required
+                  size="large"
+                />
+                <Field
+                  fullWidth
+                  size="large"
+                  component={RFTextField}
+                  // disabled={submitting || signedIn}
+                  required
+                  name="password"
+                  autoComplete="current-password"
+                  label="Password"
+                  type="password"
+                  margin="normal"
+                />
+                <FormSpy subscription={{ submitError: true }}>
+                  {({ submitError }) =>
+                    submitError ? (
+                      <FormFeedback className={classes.feedback} error>
+                        {submitError}
+                      </FormFeedback>
+                    ) : null
+                  }
+                </FormSpy>
+                <FormButton
+                  className={classes.button}
+                  // disabled={submitting || signedIn}
+                  size="large"
+                  color="secondary"
+                  fullWidth
+                >
+                  {"Sign In"}
+                </FormButton>
+              </form>
+            )}
+          </Form>
+          <Typography align="center">
+            <Link
+              underline="always"
+              href="/premium-themes/onepirate/forgot-password/"
+            >
+              Forgot password?
             </Link>
           </Typography>
-        </React.Fragment>
-        <Form
-          onSubmit={handleSubmit2}
-          subscription={{ submitting: true }}
-          validate={validate}
-        >
-          {({ handleSubmit }) => (
-            <form onSubmit={handleSubmit}>
-              <Field
-                autoComplete="email"
-                autoFocus
-                component={RFTextField}
-                // disabled={submitting || signedIn}
-                fullWidth
-                label="Email"
-                margin="normal"
-                name="email"
-                required
-                size="large"
-              />
-              <Field
-                fullWidth
-                size="large"
-                component={RFTextField}
-                // disabled={submitting || signedIn}
-                required
-                name="password"
-                autoComplete="current-password"
-                label="Password"
-                type="password"
-                margin="normal"
-              />
-              <FormSpy subscription={{ submitError: true }}>
-                {({ submitError }) =>
-                  submitError ? (
-                    <FormFeedback className={classes.feedback} error>
-                      {submitError}
-                    </FormFeedback>
-                  ) : null
-                }
-              </FormSpy>
-              <FormButton
-                className={classes.button}
-                // disabled={submitting || signedIn}
-                size="large"
-                color="secondary"
-                fullWidth
-              >
-                {"Sign In"}
-              </FormButton>
-            </form>
-          )}
-        </Form>
-        <Typography align="center">
-          <Link
-            underline="always"
-            href="/premium-themes/onepirate/forgot-password/"
-          >
-            Forgot password?
-          </Link>
-        </Typography>
-      </AppForm>
-      <AppFooter />
-    </React.Fragment>
-  );
+        </AppForm>
+        <AppFooter />
+      </React.Fragment>
+    );
+  }
 }
 
 export default withRoot(SignIn);

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useMemo } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import "./App.css";
 import Home from "./views/Home/Home";
@@ -17,6 +17,12 @@ import SignUp from "./views/Home/SignUp";
 
 Amplify.configure(aws_exports);
 
+export const UserContext = React.createContext({});
+export const LoggedInContext = React.createContext({
+  userLoggedIn: false,
+  setUserLoggedIn: () => {}
+});
+
 const useStyles = makeStyles({
   root: {
     background: "linear-gradient(45deg, #FE6B8B 30%, #FF8E53 90%)",
@@ -29,24 +35,50 @@ const useStyles = makeStyles({
   }
 });
 
+// checkLoginStatus() {
+
+// }
+
 function App() {
+  const [userLoggedIn, setUserLoggedIn] = useState(false);
+  const [currentUser, setCurrentUser] = useState("");
+  // const userValue = useMemo(() => ({ currentUser, setCurrentUser }), [
+  //   currentUser,
+  //   setCurrentUser
+  // ]);
+  // const loggedInValue = useMemo(() => ({ userLoggedIn, setUserLoggedIn }), [
+  //   userLoggedIn,
+  //   setUserLoggedIn
+  // ]);
+  const loggedInValue = { userLoggedIn, setUserLoggedIn };
+  const userValue = { currentUser, setCurrentUser };
   const classes = useStyles();
+  console.log(loggedInValue);
   return (
     <Router>
       <div>
-        <AppAppBar />
-        <Switch>
-          <Route path="/" exact component={Home} />
-          <Route path="/sign-in" component={SignIn} />
-          <Route path="/sign-up" component={SignUp} />
-          <Route path="/login" component={LoginPage} />
-          <Route path="/tutor" component={ProfilePage} />
-          <Route path="/selectClass" component={Types} />
-          <Route path="/viewTutors" component={TitlebarGridList} />
-        </Switch>
+        <LoggedInContext.Provider value={loggedInValue}>
+          <UserContext.Provider value={userValue}>
+            <AppAppBar curState={loggedInValue} />
+            <Switch>
+              <Route path="/" exact component={Home} />
+              <Route
+                path="/sign-in"
+                render={props => (
+                  <SignIn setUserLoggedIn={setUserLoggedIn} {...props} />
+                )}
+              />
+              <Route path="/sign-up" component={SignUp} />
+              <Route path="/login" component={LoginPage} />
+              <Route path="/tutor" component={ProfilePage} />
+              <Route path="/selectClass" component={Types} />
+              <Route path="/viewTutors" component={TitlebarGridList} />
+            </Switch>
+          </UserContext.Provider>
+        </LoggedInContext.Provider>
       </div>
     </Router>
   );
 }
 
-export default withRoot(withAuthenticator(App, true));
+export default withRoot(App);
