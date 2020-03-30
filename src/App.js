@@ -8,7 +8,7 @@ import TitlebarGridList from "./views/Student/SelectTutors";
 import Types from "./views/Student/SelectClass";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import AppAppBar from "./views/Home/modules/views/AppAppBar";
-import Amplify from "aws-amplify";
+import Amplify, { Auth } from "aws-amplify";
 import aws_exports from "./aws-exports";
 import { withAuthenticator } from "aws-amplify-react";
 import withRoot from "./views/Home/modules/withRoot";
@@ -16,6 +16,12 @@ import SignIn from "./views/Home/SignIn";
 import SignUp from "./views/Home/SignUp";
 
 Amplify.configure(aws_exports);
+
+Auth.currentAuthenticatedUser({
+  bypassCache: false // Optional, By default is false. If set to true, this call will send a request to Cognito to get the latest user data
+})
+  .then(user => console.log(user))
+  .catch(err => console.log(err));
 
 export const UserContext = React.createContext({});
 export const LoggedInContext = React.createContext({

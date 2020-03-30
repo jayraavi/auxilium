@@ -6,6 +6,7 @@ import Link from "@material-ui/core/Link";
 import AppBar from "../components/AppBar";
 import Toolbar, { styles as toolbarStyles } from "../components/Toolbar";
 import { LoggedInContext } from "../../../../App";
+import { Auth } from "aws-amplify";
 
 const styles = theme => ({
   title: {
@@ -37,6 +38,18 @@ const styles = theme => ({
 });
 
 let x = localStorage.getItem("userLoggedIn");
+
+const handleSignOut = () => {
+  console.log("yo");
+  if (x !== "") {
+    console.log("FASDFSDFo");
+    Auth.signOut()
+    .then(data => console.log(data))
+    .catch(err => console.log(err));
+    localStorage.setItem("userLoggedIn", "");
+  }
+};
+
 console.log(localStorage.getItem("userLoggedIn"));
 
 function AppAppBar(props) {
@@ -63,7 +76,8 @@ function AppAppBar(props) {
               variant="h6"
               underline="none"
               className={classes.rightLink}
-              href="/sign-in/"
+              onClick={handleSignOut}
+              href={x !== "" ? "#" : "/sign-in/"}
             >
               {x !== "" ? "Sign Out" : "Sign In"}
             </Link>
