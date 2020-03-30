@@ -14,6 +14,9 @@ import { withAuthenticator } from "aws-amplify-react";
 import withRoot from "./views/Home/modules/withRoot";
 import SignIn from "./views/Home/SignIn";
 import SignUp from "./views/Home/SignUp";
+import { createBrowserHistory } from "history";
+
+export const appHistory = createBrowserHistory();
 
 Amplify.configure(aws_exports);
 
@@ -61,11 +64,11 @@ function App() {
   const classes = useStyles();
   console.log(loggedInValue);
   return (
-    <Router>
+    <Router history={appHistory}>
       <div>
         <LoggedInContext.Provider value={loggedInValue}>
           <UserContext.Provider value={userValue}>
-            <AppAppBar curState={loggedInValue} />
+            <AppAppBar curState={localStorage.getItem("userLoggedIn")} />
             <Switch>
               <Route path="/" exact component={Home} />
               <Route

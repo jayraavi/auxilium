@@ -13,7 +13,9 @@ import RFTextField from "./modules/form/RFTextField";
 import FormButton from "./modules/form/FormButton";
 import FormFeedback from "./modules/form/FormFeedback";
 import { Auth } from "aws-amplify";
-import { LoggedInContext } from "../../App";
+import { LoggedInContext, appHistory } from "../../App";
+import Home from "../Home/Home";
+import { Redirect } from "react-router-dom";
 
 console.log(localStorage.getItem("userLoggedIn"));
 
@@ -75,7 +77,10 @@ function SignIn(props) {
       .then(user => console.log(user))
       .catch(err => console.log(err));
     // setUserLoggedIn(true);
-    return <h1> You have signed in :) </h1>;
+    appHistory.push("/");
+    appHistory.goBack();
+    window.location.reload(false);
+    // return <Redirect push to="/"></Redirect>;
   } else {
     return (
       <React.Fragment>

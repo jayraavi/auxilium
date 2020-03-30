@@ -8,6 +8,7 @@ import Toolbar, { styles as toolbarStyles } from "../components/Toolbar";
 import { LoggedInContext } from "../../../../App";
 import { Auth } from "aws-amplify";
 
+
 const styles = theme => ({
   title: {
     fontSize: 24
@@ -44,8 +45,8 @@ const handleSignOut = () => {
   if (x !== "") {
     console.log("FASDFSDFo");
     Auth.signOut()
-    .then(data => console.log(data))
-    .catch(err => console.log(err));
+      .then(data => console.log(data))
+      .catch(err => console.log(err));
     localStorage.setItem("userLoggedIn", "");
   }
 };
@@ -77,7 +78,7 @@ function AppAppBar(props) {
               underline="none"
               className={classes.rightLink}
               onClick={handleSignOut}
-              href={x !== "" ? "#" : "/sign-in/"}
+              href={props.curState !== "" ? "/" : "/sign-in/"}
             >
               {x !== "" ? "Sign Out" : "Sign In"}
             </Link>
@@ -85,7 +86,7 @@ function AppAppBar(props) {
               variant="h6"
               underline="none"
               className={clsx(classes.rightLink, classes.linkSecondary)}
-              href={x !== "" ? "/sign-up/" : "/sign-out/"}
+              href={props.curState !== "" ? "/sign-up/" : "/sign-out/"}
             >
               {"Sign Up"}
             </Link>
