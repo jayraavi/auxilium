@@ -1,6 +1,18 @@
+
+
 import React from "react";
 import PropTypes from "prop-types";
-import TextField from "../components/TextField";
+import TextField from "@material-ui/core/TextField";
+import { withStyles } from "@material-ui/core/styles";
+
+const styles = {
+  root: {
+    background: "white"
+  },
+  input: {
+    color: "secondary"
+  }
+};
 
 function RFTextField(props) {
   const {
@@ -11,12 +23,21 @@ function RFTextField(props) {
     ...other
   } = props;
 
+  const { classes } = props;
+
   return (
     <TextField
+      defaultValue="color"
+      id="standard-basic"
+      label="Standard"
+      color="secondary"
+      variant="filled"
+      className={classes.root}
       error={Boolean(touched && (error || submitError))}
       {...input}
       {...other}
       InputProps={{
+        className: classes.input,
         inputProps: {
           autoComplete
         },
@@ -28,6 +49,7 @@ function RFTextField(props) {
 }
 
 RFTextField.propTypes = {
+  classes: PropTypes.object.isRequired,
   autoComplete: PropTypes.string,
   input: PropTypes.object.isRequired,
   InputProps: PropTypes.object,
@@ -37,4 +59,4 @@ RFTextField.propTypes = {
   }).isRequired
 };
 
-export default RFTextField;
+export default withStyles(styles)(RFTextField);

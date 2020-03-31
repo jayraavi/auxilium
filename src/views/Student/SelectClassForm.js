@@ -6,6 +6,13 @@ import FormControl from "@material-ui/core/FormControl";
 import Select from "@material-ui/core/Select";
 import NativeSelect from "@material-ui/core/NativeSelect";
 import InputBase from "@material-ui/core/InputBase";
+import FormHelperText from "@material-ui/core/FormHelperText";
+import TextField from "@material-ui/core/TextField";
+import DeptTextField from "./DeptTextField";
+import NumTextField from "./NumTextField";
+import { Field, Form, FormSpy } from "react-final-form";
+import Button from "../Home/modules/components/Button";
+import FormButton from "../Home/modules/form/FormButton";
 
 const BootstrapInput = withStyles(theme => ({
   root: {
@@ -48,6 +55,9 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+const handleSubmit2 = formObj => {
+  console.log(formObj);
+};
 export default function CustomizedSelects() {
   const classes = useStyles();
   const [age, setAge] = React.useState("");
@@ -56,24 +66,42 @@ export default function CustomizedSelects() {
   };
   return (
     <div>
-      <FormControl className={classes.margin}>
-        <InputLabel id="demo-customized-select-label">Department</InputLabel>
-        <Select
-          labelId="demo-customized-select-label"
-          id="demo-customized-select"
-          value={age}
-          onChange={handleChange}
-          input={<BootstrapInput />}
-        >
-          <MenuItem value={10}>CSC</MenuItem>
-          <MenuItem value={20}>BUS</MenuItem>
-          <MenuItem value={30}>HIST</MenuItem>
-        </Select>
-      </FormControl>
-      <FormControl className={classes.margin}>
-        <InputLabel htmlFor="demo-customized-textbox">Class Number</InputLabel>
-        <BootstrapInput id="demo-customized-textbox" />
-      </FormControl>
+      <Form onSubmit={handleSubmit2} subscription={{ submitting: true }}>
+        {({ handleSubmit }) => (
+          <form onSubmit={handleSubmit}>
+            <Field
+              autoComplete="email"
+              autoFocus
+              component={DeptTextField}
+              fullWidth
+              label="Dept"
+              margin="normal"
+              name="email"
+              required
+              size="large"
+            />
+            <Field
+              fullWidth
+              size="large"
+              component={NumTextField}
+              required
+              name="password"
+              autoComplete="current-password"
+              label="Num"
+              margin="normal"
+            />
+
+            <FormButton
+              className={classes.button}
+              size="large"
+              color="secondary"
+              fullWidth
+            >
+              {"Find Tutors"}
+            </FormButton>
+          </form>
+        )}
+      </Form>
     </div>
   );
 }

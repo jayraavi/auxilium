@@ -20,6 +20,7 @@ import withRoot from "./views/Home/modules/withRoot";
 import SignIn from "./views/Home/SignIn";
 import SignUp from "./views/Home/SignUp";
 import { createBrowserHistory } from "history";
+import SelectClass from "./views/Student/SelectClass";
 
 export const appHistory = createBrowserHistory();
 
@@ -82,7 +83,7 @@ function App() {
               <Route path="/sign-up" component={SignUp} />
               <Route path="/login" component={LoginPage} />
               <Route path="/tutor" component={ProfilePage} />
-              <Route path="/selectClass" component={Types} />
+              <Route path="/selectClass" component={SelectClass} />
               <Route path="/viewTutors" component={TitlebarGridList} />
               <Route render={() => <Redirect to={{ pathname: "/" }} />} />
             </Switch>

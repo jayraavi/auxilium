@@ -15,6 +15,7 @@ import FormFeedback from "./modules/form/FormFeedback";
 import { Auth } from "aws-amplify";
 import { appHistory } from "../../App";
 
+
 console.log(localStorage.getItem("userLoggedIn"));
 
 const useStyles = makeStyles(theme => ({
