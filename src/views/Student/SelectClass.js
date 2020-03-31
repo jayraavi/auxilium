@@ -5,6 +5,8 @@ import Button from "../Home/modules/components/Button";
 import Typography from "../Home/modules/components/Typography";
 import ProductHeroLayout from "../Home/modules/views/ProductHeroLayout";
 import CustomizedSelects from "./SelectClassForm";
+import API, { graphqlOperation } from "@aws-amplify/api";
+import PubSub from "@aws-amplify/pubsub";
 
 const backgroundImage =
   "https://images.unsplash.com/photo-1468276311594-df7cb65d8df6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80";
@@ -49,7 +51,6 @@ function SelectClass(props) {
       <br></br>
 
       <CustomizedSelects />
-
     </ProductHeroLayout>
   );
 }
