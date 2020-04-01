@@ -5,7 +5,6 @@ import Typography from "../Home/modules/components/Typography";
 import ProductHeroLayout from "../Home/modules/views/ProductHeroLayout";
 import CustomizedSelects from "./SelectClassForm";
 
-
 const backgroundImage =
   "https://images.unsplash.com/photo-1468276311594-df7cb65d8df6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80";
 
@@ -31,22 +30,27 @@ const styles = theme => ({
 });
 
 function SelectClass(props) {
+  if (localStorage.getItem("num") !== "") {
+    localStorage.setItem("num", "");
+    localStorage.setItem("dept", "");
+  }
+
   const { classes } = props;
 
   return (
-      <ProductHeroLayout backgroundClassName={classes.background}>
-        <img
-          style={{ display: "none" }}
-          src={backgroundImage}
-          alt="increase priority"
-        />
-        <Typography color="inherit" align="center" variant="h2" marked="center">
-          Enter Class Below.
-        </Typography>
-        <br></br>
+    <ProductHeroLayout backgroundClassName={classes.background}>
+      <img
+        style={{ display: "none" }}
+        src={backgroundImage}
+        alt="increase priority"
+      />
+      <Typography color="inherit" align="center" variant="h2" marked="center">
+        Enter Class Below.
+      </Typography>
+      <br></br>
 
-        <CustomizedSelects />
-      </ProductHeroLayout>
+      <CustomizedSelects />
+    </ProductHeroLayout>
   );
 }
 
