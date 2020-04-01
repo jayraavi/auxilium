@@ -37,7 +37,7 @@ const tileData = [
 
 const useStyles = makeStyles({
   root: {
-    maxWidth: 345
+    minWidth: 345
   },
   media: {
     height: 140
@@ -57,7 +57,11 @@ function TutorCard(props) {
       <Redirect
         to={{
           pathname: "/tutor",
-          state: { id: props.tutor.tutorID, dept: props.tutor.dept, num: props.tutor.num }
+          state: {
+            id: props.tutor.tutorID,
+            dept: props.tutor.dept,
+            num: props.tutor.num
+          }
         }}
       />
     );
