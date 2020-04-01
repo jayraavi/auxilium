@@ -1,4 +1,3 @@
-
 import React from "react";
 import PropTypes from "prop-types";
 import TextField from "@material-ui/core/TextField";
@@ -12,7 +11,7 @@ const styles = {
     color: "secondary"
   }
 };
-function RFTextField(props) {
+function DeptTextField(props) {
   const {
     autoComplete,
     input,
@@ -20,18 +19,51 @@ function RFTextField(props) {
     meta: { touched, error, submitError },
     ...other
   } = props;
-  const currencies = [
+  const departments = [
     {
-      label: "CSC"
+      dept: "AEPS"
     },
     {
-      label: "ENV"
+      dept: "AERO"
     },
     {
-      label: "ARCE"
+      dept: "AG"
     },
     {
-      label: "BUS"
+      dept: "AGB"
+    },
+    {
+      dept: "AGC"
+    },
+    {
+      dept: "AGED"
+    },
+    {
+      dept: "ANT"
+    },
+    {
+      dept: "ARCE"
+    },
+    {
+      dept: "ARCH"
+    },
+    {
+      dept: "ART"
+    },
+    {
+      dept: "ASCI"
+    },
+    {
+      dept: "CSC"
+    },
+    {
+      dept: "ENV"
+    },
+    {
+      dept: "ARCE"
+    },
+    {
+      dept: "BUS"
     }
   ];
 
@@ -55,16 +87,16 @@ function RFTextField(props) {
         ...InputProps
       }}
     >
-      {currencies.map(option => (
-        <MenuItem key={option.label} value={option.label}>
-          {option.label}
+      {departments.map(option => (
+        <MenuItem key={option.dept} value={option.dept}>
+          {option.dept}
         </MenuItem>
       ))}
     </TextField>
   );
 }
 
-RFTextField.propTypes = {
+DeptTextField.propTypes = {
   classes: PropTypes.object.isRequired,
   autoComplete: PropTypes.string,
   input: PropTypes.object.isRequired,
@@ -75,5 +107,4 @@ RFTextField.propTypes = {
   }).isRequired
 };
 
-export default withStyles(styles)(RFTextField);
-
+export default withStyles(styles)(DeptTextField);

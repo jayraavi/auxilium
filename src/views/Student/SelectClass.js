@@ -1,11 +1,9 @@
 import React from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
-import Button from "../Home/modules/components/Button";
 import Typography from "../Home/modules/components/Typography";
 import ProductHeroLayout from "../Home/modules/views/ProductHeroLayout";
 import CustomizedSelects from "./SelectClassForm";
-
 
 
 const backgroundImage =
@@ -32,14 +30,11 @@ const styles = theme => ({
   }
 });
 
-const loggedIn = localStorage.getItem("userLoggedIn");
-
 function SelectClass(props) {
   const { classes } = props;
 
   return (
       <ProductHeroLayout backgroundClassName={classes.background}>
-        {/* Increase the network loading priority of the background image. */}
         <img
           style={{ display: "none" }}
           src={backgroundImage}

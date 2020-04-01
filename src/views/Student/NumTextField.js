@@ -1,5 +1,3 @@
-
-
 import React from "react";
 import PropTypes from "prop-types";
 import TextField from "@material-ui/core/TextField";
@@ -14,7 +12,7 @@ const styles = {
   }
 };
 
-function RFTextField(props) {
+function NumTextField(props) {
   const {
     autoComplete,
     input,
@@ -48,7 +46,7 @@ function RFTextField(props) {
   );
 }
 
-RFTextField.propTypes = {
+NumTextField.propTypes = {
   classes: PropTypes.object.isRequired,
   autoComplete: PropTypes.string,
   input: PropTypes.object.isRequired,
@@ -59,4 +57,4 @@ RFTextField.propTypes = {
   }).isRequired
 };
 
-export default withStyles(styles)(RFTextField);
+export default withStyles(styles)(NumTextField);
