@@ -5,7 +5,7 @@ import {
   Route,
   Redirect
 } from "react-router-dom";
-import { TitlebarGridList } from "./SelectTutors";
+import TitlebarGridList from "./SelectTutors";
 
 const classes = [
   {
@@ -30,12 +30,16 @@ export default function RoutedTutors(props) {
   return (
     <Router>
       {classes.map(className => (
-         <Route
-         path={"?class=" + className.name}
-         render={props => (
-           <TitlebarGridList dept = {className.dept} num = {className.num} {...props} />
-         )}
-       />
+        <Route
+          path={`/viewTutors?class=:classId`}
+          render={props => (
+            <TitlebarGridList
+              dept={className.dept}
+              num={className.num}
+              {...props}
+            />
+          )}
+        />
       ))}
     </Router>
   );

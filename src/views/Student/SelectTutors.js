@@ -19,11 +19,27 @@ import HeaderLinks from "../../components/Header/HeaderLinks.js";
 import styles from "../../assets/jss/material-kit-react/views/loginPage.js";
 import API, { graphqlOperation } from "@aws-amplify/api";
 import PubSub from "@aws-amplify/pubsub";
-import { listTutors } from "../../graphql/queries";
+import { listClasss } from "../../graphql/queries";
+import { useLocation } from "react-router-dom";
 
-async function list() {
+async function listTutors(dept, num) {
   const todo = { name: "Use AWS AppSync", description: "Realtime and Offline" };
-  const data = await API.graphql(graphqlOperation(listTutors));
+  const data = await API.graphql(
+    graphqlOperation(listClasss, {
+      filter: {
+        dept: {
+          contains: dept.dept
+        },
+        and: {
+          num: {
+            contains: num.num
+          }
+        }
+      }
+    })
+  );
+  console.log(dept.dept);
+  console.log(num.num);
   console.log(data);
 }
 
@@ -106,9 +122,16 @@ const tileData = [
 ];
 
 export default function TitlebarGridList(props) {
+  console.log(props.location.state.dept);
+  console.log(useLocation());
   const classes = useStyles();
   const { ...rest } = props;
   const cardClasses = useStylesCard();
+  const tutorData = listTutors(
+    props.location.state.dept,
+    props.location.state.num
+  );
+  console.log(tutorData);
 
   return (
     <div>

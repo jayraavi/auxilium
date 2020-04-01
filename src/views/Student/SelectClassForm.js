@@ -16,6 +16,13 @@ import FormButton from "../Home/modules/form/FormButton";
 import API, { graphqlOperation } from "@aws-amplify/api";
 import PubSub from "@aws-amplify/pubsub";
 import { listClasss } from "../../graphql/queries";
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route,
+  Redirect,
+  Link
+} from "react-router-dom";
 
 async function list(dept, num) {
   const todo = { name: "Use AWS AppSync", description: "Realtime and Offline" };
@@ -77,16 +84,35 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const handleSubmit2 = formObj => {
-  console.log(formObj);
-  list();
-};
 export default function CustomizedSelects() {
   const classes = useStyles();
   const [age, setAge] = React.useState("");
+  const [submitted, setSubmitted] = React.useState(false);
+  const [dept, setDept] = React.useState("");
+  const [num, setNum] = React.useState("");
   const handleChange = event => {
     setAge(event.target.value);
   };
+
+  const handleSubmit2 = formObj => {
+    console.log(formObj);
+    setSubmitted(true);
+    setDept(formObj.email);
+    setNum(formObj.password);
+    list();
+  };
+
+  if (submitted) {
+    return (
+      <Redirect
+        to={{
+          pathname: "/viewTutors",
+          state: { dept: { dept }, num: { num } }
+        }}
+      />
+    );
+  }
+
   return (
     <div>
       <Form onSubmit={handleSubmit2} subscription={{ submitting: true }}>
