@@ -22,7 +22,7 @@ import SignUp from "./views/Home/SignUp";
 import { createBrowserHistory } from "history";
 import SelectClass from "./views/Student/SelectClass";
 import SelectTutorsWrapper from "./views/Student/SelectTutorsWrapper";
-
+  
 export const appHistory = createBrowserHistory();
 
 Amplify.configure(aws_exports);

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import GridList from "@material-ui/core/GridList";
 import GridListTile from "@material-ui/core/GridListTile";
@@ -21,27 +21,6 @@ import API, { graphqlOperation } from "@aws-amplify/api";
 import PubSub from "@aws-amplify/pubsub";
 import { listClasss } from "../../graphql/queries";
 import { useLocation } from "react-router-dom";
-
-async function listTutors(dept, num) {
-  const todo = { name: "Use AWS AppSync", description: "Realtime and Offline" };
-  const data = await API.graphql(
-    graphqlOperation(listClasss, {
-      filter: {
-        dept: {
-          contains: dept.dept
-        },
-        and: {
-          num: {
-            contains: num.num
-          }
-        }
-      }
-    })
-  );
-  console.log(dept.dept);
-  console.log(num.num);
-  console.log(data);
-}
 
 const backgroundImage =
   "https://images.unsplash.com/photo-1468276311594-df7cb65d8df6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80";
@@ -122,16 +101,45 @@ const tileData = [
 ];
 
 export default function TitlebarGridList(props) {
-  console.log(props.location.state.dept);
-  console.log(useLocation());
   const classes = useStyles();
+  const dept = props.location.state.dept;
+  const num = props.location.state.num;
   const { ...rest } = props;
+  const [tutors, setTutors] = React.useState([]);
+  const [fetched, setFetched] = React.useState(false);
   const cardClasses = useStylesCard();
-  const tutorData = listTutors(
-    props.location.state.dept,
-    props.location.state.num
-  );
-  console.log(tutorData);
+
+  useEffect(() => {
+    listTutors(dept, num);
+  });
+
+  async function listTutors(dept, num) {
+    if (!fetched) {
+      try {
+        const data = await API.graphql(
+          graphqlOperation(listClasss, {
+            filter: {
+              dept: {
+                contains: dept.dept
+              },
+              and: {
+                num: {
+                  contains: num.num
+                }
+              }
+            }
+          })
+        );
+        console.log(data);
+        setFetched(true);
+        setTutors(data.data.listClasss.items);
+      } catch (err) {
+        console.log(err.message);
+      }
+    }
+  }
+
+  console.log(tutors);
 
   return (
     <div>
@@ -148,28 +156,27 @@ export default function TitlebarGridList(props) {
             <GridListTile key="Subheader" cols={2} style={{ height: "auto" }}>
               <ListSubheader component="div">December</ListSubheader>
             </GridListTile>
-            {tileData.map(tile => (
+            {tutors.map(tutor => (
               <Card className={classes.root}>
                 <CardActionArea>
                   <CardMedia
                     component="img"
                     alt="Contemplative Reptile"
                     height="140"
-                    image={tile.img}
+                    image={tileData[0].img}
                     title="Contemplative Reptile"
                   />
                   <CardContent>
                     <Typography gutterBottom variant="h5" component="h2">
-                      {tile.title}
+                      {tutor.tutor.name}
                     </Typography>
                     <Typography
                       variant="body2"
                       color="textSecondary"
                       component="p"
                     >
-                      Lizards are a widespread group of squamate reptiles, with
-                      over 6,000 species, ranging across all continents except
-                      Antarctica
+                      Phone number: {tutor.tutor.cell}
+                      Email: {tutor.tutor.email}
                     </Typography>
                   </CardContent>
                 </CardActionArea>
