@@ -29,6 +29,8 @@ const styles = theme => ({
   }
 });
 
+const loggedIn = localStorage.getItem("userLoggedIn");
+
 function ProductHero(props) {
   const { classes } = props;
 
@@ -57,10 +59,11 @@ function ProductHero(props) {
         size="large"
         className={classes.button}
         component="a"
-        href="/sign-up/"
+        href={loggedIn !== "" ? "/selectClass" : "/sign-up"}
       >
-        Register
+        {loggedIn !== "" ? "Find Tutors" : "Register"}
       </Button>
+
       <Typography variant="body2" color="inherit" className={classes.more}>
         Discover the experience
       </Typography>

@@ -4,8 +4,6 @@ import "./App.css";
 import Home from "./views/Home/Home";
 import LoginPage from "./views/LoginPage";
 import ProfilePage from "./views/ProfilePage";
-import TitlebarGridList from "./views/Student/SelectTutors";
-import Types from "./views/Student/SelectClass";
 import {
   BrowserRouter as Router,
   Switch,
@@ -15,11 +13,14 @@ import {
 import AppAppBar from "./views/Home/modules/views/AppAppBar";
 import Amplify, { Auth } from "aws-amplify";
 import aws_exports from "./aws-exports";
-import { withAuthenticator } from "aws-amplify-react";
 import withRoot from "./views/Home/modules/withRoot";
 import SignIn from "./views/Home/SignIn";
 import SignUp from "./views/Home/SignUp";
 import { createBrowserHistory } from "history";
+import SelectClass from "./views/Student/SelectClass";
+import TutorSelect from "./views/Student/TutorSelect";
+import ProductSmokingHero from "./views/Home/modules/views/ProductSmokingHero";
+import AppFooter from "./views/Home/modules/views/AppFooter";
 
 export const appHistory = createBrowserHistory();
 
@@ -48,10 +49,6 @@ const useStyles = makeStyles({
     padding: "0 30px"
   }
 });
-
-// checkLoginStatus() {
-
-// }
 
 function App() {
   const [userLoggedIn, setUserLoggedIn] = useState(false);
@@ -82,10 +79,12 @@ function App() {
               <Route path="/sign-up" component={SignUp} />
               <Route path="/login" component={LoginPage} />
               <Route path="/tutor" component={ProfilePage} />
-              <Route path="/selectClass" component={Types} />
-              <Route path="/viewTutors" component={TitlebarGridList} />
+              <Route path="/selectClass" component={SelectClass} />
+              <Route path="/viewTutors" component={TutorSelect} />
               <Route render={() => <Redirect to={{ pathname: "/" }} />} />
             </Switch>
+            <ProductSmokingHero />
+            <AppFooter />
           </UserContext.Provider>
         </LoggedInContext.Provider>
       </div>
