@@ -13,6 +13,28 @@ import NumTextField from "./NumTextField";
 import { Field, Form, FormSpy } from "react-final-form";
 import Button from "../Home/modules/components/Button";
 import FormButton from "../Home/modules/form/FormButton";
+import API, { graphqlOperation } from "@aws-amplify/api";
+import PubSub from "@aws-amplify/pubsub";
+import { listClasss } from "../../graphql/queries";
+
+async function list(dept, num) {
+  const todo = { name: "Use AWS AppSync", description: "Realtime and Offline" };
+  const data = await API.graphql(
+    graphqlOperation(listClasss, {
+      filter: {
+        dept: {
+          contains: "CSC"
+        },
+        and: {
+          num: {
+            contains: "349"
+          }
+        }
+      }
+    })
+  );
+  console.log(data);
+}
 
 const BootstrapInput = withStyles(theme => ({
   root: {
@@ -57,6 +79,7 @@ const useStyles = makeStyles(theme => ({
 
 const handleSubmit2 = formObj => {
   console.log(formObj);
+  list();
 };
 export default function CustomizedSelects() {
   const classes = useStyles();
@@ -96,6 +119,7 @@ export default function CustomizedSelects() {
               size="large"
               color="secondary"
               fullWidth
+              // href={"/viewTutors"}
             >
               {"Find Tutors"}
             </FormButton>

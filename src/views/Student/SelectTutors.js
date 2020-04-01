@@ -17,6 +17,15 @@ import image from "../../assets/img/bg7.jpg";
 import Header from "../../components/Header/Header.js";
 import HeaderLinks from "../../components/Header/HeaderLinks.js";
 import styles from "../../assets/jss/material-kit-react/views/loginPage.js";
+import API, { graphqlOperation } from "@aws-amplify/api";
+import PubSub from "@aws-amplify/pubsub";
+import { listTutors } from "../../graphql/queries";
+
+async function list() {
+  const todo = { name: "Use AWS AppSync", description: "Realtime and Offline" };
+  const data = await API.graphql(graphqlOperation(listTutors));
+  console.log(data);
+}
 
 const backgroundImage =
   "https://images.unsplash.com/photo-1468276311594-df7cb65d8df6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80";
