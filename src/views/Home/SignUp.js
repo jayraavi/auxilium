@@ -16,6 +16,7 @@ import FormFeedback from "./modules/form/FormFeedback";
 import { Auth } from "aws-amplify";
 import { appHistory } from "../../App";
 import SignIn from "./SignIn";
+import TutorStudentDrop from "./TutorStudentDrop";
 
 const useStyles = makeStyles(theme => ({
   form: {
@@ -148,6 +149,15 @@ function SignUp() {
                   label="Email"
                   margin="normal"
                   name="email"
+                  required
+                />
+                <Field
+                  autoComplete="email"
+                  component={TutorStudentDrop}
+                  fullWidth
+                  label="Are you a Tutor or Student?"
+                  margin="normal"
+                  name="type"
                   required
                 />
                 <Field
