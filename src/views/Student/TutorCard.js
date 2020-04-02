@@ -12,7 +12,7 @@ import styles from "./tutorImageStyles";
 import classNames from "classnames";
 
 const drake =
-  "https://media-exp1.licdn.com/dms/image/C5603AQHY6yNQU45fCw/profile-displayphoto-shrink_200_200/0?e=1587600000&v=beta&t=wuH6-A-e1XSpveqXU_yjBNTtC-NSwmM2yg7d22HduZ4";
+  "https://www.rollingstone.com/wp-content/uploads/2019/10/Drake.jpg";
 
 const tileData = [
   {
