@@ -1,6 +1,6 @@
 import withRoot from "./modules/withRoot";
 // --- Post bootstrap -----
-import React from "react";
+import React, { useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Link from "@material-ui/core/Link";
@@ -17,6 +17,8 @@ import { Auth } from "aws-amplify";
 import { appHistory } from "../../App";
 import SignIn from "./SignIn";
 import TutorStudentDrop from "./TutorStudentDrop";
+import Amplify, { API, graphqlOperation } from "aws-amplify";
+import { createTutor } from "../../graphql/mutations";
 
 const useStyles = makeStyles(theme => ({
   form: {
@@ -36,6 +38,9 @@ function SignUp() {
   const [signedUp, setSignedUp] = React.useState(false);
   const [confirmed, setConfirmed] = React.useState(false);
   const [email, setEmail] = React.useState("");
+  const [name, setName] = React.useState("");
+  const [cell, setCell] = React.useState("");
+  const [isTutor, setIsTutor] = React.useState(false);
   const [confirmationCode, setConfirmationCode] = React.useState();
 
   const validate = values => {
@@ -55,6 +60,9 @@ function SignUp() {
   };
 
   const handleSubmit2 = formObj => {
+    if (formObj.type === "Tutor" || formObj.type === "Both") {
+      setIsTutor(true);
+    }
     if (!signedUp) {
       Auth.signUp({
         username: formObj.email,
@@ -80,16 +88,34 @@ function SignUp() {
       Auth.confirmSignUp(formObj.email, formObj.code)
         .then(() => setConfirmed(true), console.log("confirmed"))
         .catch(err => console.log(err));
-      // localStorage.setItem("userLoggedIn", formObj.email);
-      // Auth.signIn({
-      //   username: formObj.email,
-      //   password: formObj.password
-      // })
-      //   .then(() => console.log("Signed In"))
-      //   .catch(err => alert(err.message));
-      // setEmail(formObj.email);
+      setEmail(formObj.email);
+      setName(formObj.firstName + "" + formObj.lastName);
+      setCell(formObj.number);
     }
   };
+
+  const tutorData = {
+    name: name,
+    email: email,
+    cell: cell
+  };
+
+  async function create(tutorData) {
+    try {
+      const data = await API.graphql(
+        graphqlOperation(createTutor, { input: tutorData })
+      );
+      console.log(data);
+    } catch (err) {
+      console.log(err.message);
+    }
+  }
+  useEffect(() => {
+    if (confirmed && isTutor) {
+      console.log("Creating tutor");
+      create(tutorData);
+    }
+  });
 
   if (confirmed) {
     return <SignIn />;

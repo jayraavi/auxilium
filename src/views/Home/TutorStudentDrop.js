@@ -25,7 +25,8 @@ function TutorStudentDrop(props) {
     },
     {
       type: "Student"
-    }
+    },
+    { type: "Both" }
   ];
 
   const { classes } = props;
