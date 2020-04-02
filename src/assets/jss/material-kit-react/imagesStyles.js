@@ -1,10 +1,4 @@
 const imagesStyles = {
-  root: {
-    minWidth: 345
-  },
-  media: {
-    height: 140
-  },
   imgFluid: {
     maxWidth: "100%",
     height: "auto"
