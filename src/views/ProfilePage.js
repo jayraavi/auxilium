@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 // nodejs library that concatenates classes
 import classNames from "classnames";
 // @material-ui/core components
@@ -29,13 +29,25 @@ import work2 from "../assets/img/examples/clem-onojeghuo.jpg";
 import work3 from "../assets/img/examples/cynthia-del-rio.jpg";
 import work4 from "../assets/img/examples/mariya-georgieva.jpg";
 import work5 from "../assets/img/examples/clem-onojegaw.jpg";
+import API, { graphqlOperation } from "@aws-amplify/api";
+import { getTutor } from "../graphql/queries";
+import { appHistory } from "../App";
 
 import styles from "../assets/jss/material-kit-react/views/profilePage.js";
 
 const useStyles = makeStyles(styles);
 
 export default function ProfilePage(props) {
+  appHistory.push("/viewTutors");
+
+  const tutorID = props.location.state.id;
+  const dept = props.location.state.dept;
+  const num = props.location.state.num;
   const classes = useStyles();
+  const [tutorName, setTutorName] = React.useState("");
+  const [tutorEmail, setTutorEmail] = React.useState("");
+  const [tutorCell, setTutorCell] = React.useState("");
+  const [fetched, setFetched] = React.useState(false);
   const { ...rest } = props;
   const imageClasses = classNames(
     classes.imgRaised,
@@ -43,6 +55,29 @@ export default function ProfilePage(props) {
     classes.imgFluid
   );
   const navImageClasses = classNames(classes.imgRounded, classes.imgGallery);
+
+  useEffect(() => {
+    getTutorData(tutorID);
+  });
+
+  async function getTutorData(tutorID) {
+    if (!fetched) {
+      try {
+        const data = await API.graphql(
+          graphqlOperation(getTutor, { id: tutorID })
+        );
+        console.log(data);
+        setFetched(true);
+        setTutorName(data.data.getTutor.name);
+        setTutorEmail(data.data.getTutor.email);
+        setTutorCell(data.data.getTutor.cell);
+      } catch (err) {
+        console.log(err.message);
+      }
+    }
+  }
+  console.log(tutorName);
+
   return (
     <div>
       <Parallax small filter image={require("../assets/img/profile-bg.jpg")} />
@@ -53,11 +88,21 @@ export default function ProfilePage(props) {
               <GridItem xs={12} sm={12} md={6}>
                 <div className={classes.profile}>
                   <div>
-                    <img src={profile} alt="..." className={imageClasses} />
+                    <img
+                      src={
+                        "https://media-exp1.licdn.com/dms/image/C5603AQHY6yNQU45fCw/profile-displayphoto-shrink_200_200/0?e=1587600000&v=beta&t=wuH6-A-e1XSpveqXU_yjBNTtC-NSwmM2yg7d22HduZ4"
+                      }
+                      alt="..."
+                      className={imageClasses}
+                    />
                   </div>
                   <div className={classes.name}>
-                    <h3 className={classes.title}>Christian Louboutin</h3>
-                    <h6>DESIGNER</h6>
+                    <h3 className={classes.title}>{tutorName}</h3>
+                    <h4>
+                      TUTOR for {dept} {num}
+                    </h4>
+                    <h5>CELL: {tutorCell}</h5>
+                    <h5>EMAIL: {tutorEmail}</h5>
                     <Button justIcon link className={classes.margin5}>
                       <i className={"fab fa-twitter"} />
                     </Button>

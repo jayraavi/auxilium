@@ -71,8 +71,10 @@ const styles = theme => ({
 });
 
 function TutorSelect(props) {
-  const dept = props.location.state.dept;
-  const num = props.location.state.num;
+  const dept = localStorage.getItem("dept").toString();
+  console.log(dept);
+  const num = localStorage.getItem("num").toString();
+  console.log(num);
   const { ...rest } = props;
   const [tutors, setTutors] = React.useState([]);
   const [fetched, setFetched] = React.useState(false);
@@ -89,11 +91,11 @@ function TutorSelect(props) {
           graphqlOperation(listClasss, {
             filter: {
               dept: {
-                contains: dept.dept
+                contains: dept
               },
               and: {
                 num: {
-                  contains: num.num
+                  contains: num
                 }
               }
             }
@@ -124,7 +126,7 @@ function TutorSelect(props) {
         <Grid container spacing={10} style={{ padding: "24px" }}>
           {tutors.map(tutor => (
             <Grid item xs={12} sm={6} md={4} lg={4} xl={3}>
-              <TutorCard tutor={tutor} dept = {dept} num = {num}></TutorCard>
+              <TutorCard tutor={tutor} dept={dept} num={num}></TutorCard>
             </Grid>
           ))}
         </Grid>

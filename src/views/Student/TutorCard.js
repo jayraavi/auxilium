@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import Card from "@material-ui/core/Card";
 import CardActionArea from "@material-ui/core/CardActionArea";
 import CardActions from "@material-ui/core/CardActions";
@@ -7,9 +7,12 @@ import CardMedia from "@material-ui/core/CardMedia";
 import Button from "@material-ui/core/Button";
 import Typography from "@material-ui/core/Typography";
 import { makeStyles } from "@material-ui/core/styles";
+import { Redirect } from "react-router-dom";
+import styles from "./tutorImageStyles";
+import classNames from "classnames";
 
 const drake =
-  "https://thegrio.com/wp-content/uploads/2019/11/GettyImages-1153778035.jpg";
+  "https://media-exp1.licdn.com/dms/image/C5603AQHY6yNQU45fCw/profile-displayphoto-shrink_200_200/0?e=1587600000&v=beta&t=wuH6-A-e1XSpveqXU_yjBNTtC-NSwmM2yg7d22HduZ4";
 
 const tileData = [
   {
@@ -34,17 +37,37 @@ const tileData = [
   }
 ];
 
-const useStyles = makeStyles({
-  root: {
-    maxWidth: 345
-  },
-  media: {
-    height: 140
-  }
-});
+const useStyles = makeStyles(styles);
 
 function TutorCard(props) {
+  const [profileClicked, setProfileClicked] = useState(false);
+
+  const handleClick = formObj => {
+    setProfileClicked(true);
+    console.log(formObj);
+  };
   const classes = useStyles();
+  const imageClasses = classNames(
+    classes.imgRaised,
+    classes.imgRoundedCircle,
+    classes.imgFluid
+  );
+  const navImageClasses = classNames(classes.imgRounded, classes.imgGallery);
+
+  if (profileClicked) {
+    return (
+      <Redirect
+        to={{
+          pathname: "/tutor",
+          state: {
+            id: props.tutor.tutorID,
+            dept: props.tutor.dept,
+            num: props.tutor.num
+          }
+        }}
+      />
+    );
+  }
   return (
     <div>
       <Card className={classes.root}>
@@ -55,6 +78,7 @@ function TutorCard(props) {
             height="140"
             image={tileData[0].img}
             title="Contemplative Reptile"
+            className={imageClasses}
           />
           <CardContent>
             <Typography gutterBottom variant="h5" component="h2">
@@ -70,7 +94,7 @@ function TutorCard(props) {
           <Button size="small" color="primary">
             Contact
           </Button>
-          <Button size="small" color="primary">
+          <Button size="small" color="primary" onClick={handleClick}>
             View Profile
           </Button>
         </CardActions>
