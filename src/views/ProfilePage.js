@@ -88,7 +88,13 @@ export default function ProfilePage(props) {
               <GridItem xs={12} sm={12} md={6}>
                 <div className={classes.profile}>
                   <div>
-                    <img src={profile} alt="..." className={imageClasses} />
+                    <img
+                      src={
+                        "https://media-exp1.licdn.com/dms/image/C5603AQHY6yNQU45fCw/profile-displayphoto-shrink_200_200/0?e=1587600000&v=beta&t=wuH6-A-e1XSpveqXU_yjBNTtC-NSwmM2yg7d22HduZ4"
+                      }
+                      alt="..."
+                      className={imageClasses}
+                    />
                   </div>
                   <div className={classes.name}>
                     <h3 className={classes.title}>{tutorName}</h3>
