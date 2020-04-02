@@ -46,6 +46,7 @@ const handleSignOut = () => {
       .then(data => console.log(data))
       .catch(err => console.log(err));
     localStorage.setItem("userLoggedIn", "");
+    localStorage.setItem("isTutor", "");
   }
 };
 

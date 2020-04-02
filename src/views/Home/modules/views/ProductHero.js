@@ -1,9 +1,13 @@
-import React from "react";
+import React, { useEffect } from "react";
 import PropTypes from "prop-types";
 import { withStyles } from "@material-ui/core/styles";
 import Button from "../components/Button";
 import Typography from "../components/Typography";
 import ProductHeroLayout from "./ProductHeroLayout";
+import { listTutors } from "../../../../graphql/queries";
+import API, { graphqlOperation } from "@aws-amplify/api";
+
+console.log(localStorage.getItem("isTutor"));
 
 const backgroundImage =
   "https://images.unsplash.com/photo-1468276311594-df7cb65d8df6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80";
@@ -32,6 +36,36 @@ const styles = theme => ({
 const loggedIn = localStorage.getItem("userLoggedIn");
 
 function ProductHero(props) {
+  const [fetched, setFetched] = React.useState(false);
+  const isTutor = localStorage.getItem("isTutor");
+  async function getTutorStatus(email) {
+    if (!fetched) {
+      try {
+        const data = await API.graphql(
+          graphqlOperation(listTutors, {
+            filter: {
+              email: {
+                contains: email
+              }
+            }
+          })
+        );
+        console.log(data.data.listTutors.items);
+        if (data.data.listTutors.items.length > 0) {
+          localStorage.setItem("isTutor", "true");
+        }
+
+        setFetched(true);
+      } catch (err) {
+        console.log(err.message);
+      }
+    }
+  }
+
+  useEffect(() => {
+    getTutorStatus(localStorage.getItem("userLoggedIn"));
+  });
+
   const { classes } = props;
 
   return (
@@ -43,7 +77,9 @@ function ProductHero(props) {
         alt="increase priority"
       />
       <Typography color="inherit" align="center" variant="h2" marked="center">
-        Find a tutor.
+        {isTutor !== "" && loggedIn
+          ? "Add classes you can tutor"
+          : "Find a tutor."}
       </Typography>
       <Typography
         color="inherit"
@@ -59,9 +95,19 @@ function ProductHero(props) {
         size="large"
         className={classes.button}
         component="a"
-        href={loggedIn !== "" ? "/selectClass" : "/sign-up"}
+        href={
+          loggedIn !== "" && isTutor === ""
+            ? "/selectClass"
+            : loggedIn !== "" && isTutor !== ""
+            ? "/selectClass"
+            : "/sign-up"
+        }
       >
-        {loggedIn !== "" ? "Find Tutors" : "Register"}
+        {loggedIn !== "" && isTutor === ""
+          ? "Find Tutors"
+          : loggedIn !== "" && isTutor !== ""
+          ? "Add Classes"
+          : "Register"}
       </Button>
 
       <Typography variant="body2" color="inherit" className={classes.more}>
