@@ -15,7 +15,6 @@ import FormFeedback from "./modules/form/FormFeedback";
 import { Auth } from "aws-amplify";
 import { appHistory } from "../../App";
 
-
 console.log(localStorage.getItem("userLoggedIn"));
 
 const useStyles = makeStyles(theme => ({
@@ -58,6 +57,7 @@ function SignIn(props) {
         err => setSignedIn(false),
         err => alert(err.message)
       );
+
     localStorage.setItem("userLoggedIn", formObj.email);
   };
 
