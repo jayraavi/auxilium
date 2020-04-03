@@ -53,6 +53,8 @@ function ProductHero(props) {
         console.log(data.data.listTutors.items);
         if (data.data.listTutors.items.length > 0) {
           localStorage.setItem("isTutor", "true");
+          console.log(data.data.listTutors.items[0].id);
+          localStorage.setItem("tutorID", data.data.listTutors.items[0].id);
         }
 
         setFetched(true);
@@ -99,7 +101,7 @@ function ProductHero(props) {
           loggedIn !== "" && isTutor === ""
             ? "/selectClass"
             : loggedIn !== "" && isTutor !== ""
-            ? "/selectClass"
+            ? "/addClass"
             : "/sign-up"
         }
       >

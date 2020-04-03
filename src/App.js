@@ -21,6 +21,7 @@ import SelectClass from "./views/Student/SelectClass";
 import TutorSelect from "./views/Student/TutorSelect";
 import ProductSmokingHero from "./views/Home/modules/views/ProductSmokingHero";
 import AppFooter from "./views/Home/modules/views/AppFooter";
+import AddClasses from "./views/Tutor/AddClasses";
 
 export const appHistory = createBrowserHistory();
 
@@ -80,6 +81,7 @@ function App() {
               <Route path="/login" component={LoginPage} />
               <Route path="/tutor" component={ProfilePage} />
               <Route path="/selectClass" component={SelectClass} />
+              <Route path="/addClass" component={AddClasses} />
               <Route path="/viewTutors" component={TutorSelect} />
               <Route render={() => <Redirect to={{ pathname: "/" }} />} />
             </Switch>
