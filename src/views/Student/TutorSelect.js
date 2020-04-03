@@ -50,11 +50,11 @@ const backgroundImage =
   "https://images.unsplash.com/photo-1468276311594-df7cb65d8df6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80";
 
 const styles = theme => ({
-  background: {
-    backgroundImage: `url(${backgroundImage})`,
-    backgroundColor: "#7fc7d9", // Average color of the background image.
-    backgroundPosition: "center"
-  },
+    background: {
+      backgroundImage: `url(${backgroundImage})`,
+      backgroundColor: "#7fc7d9", // Average color of the background image.
+      backgroundPosition: "center"
+    },
   button: {
     minWidth: 200
   },
@@ -119,11 +119,12 @@ function TutorSelect(props) {
         src={backgroundImage}
         alt="increase priority"
       />
+
       <Typography color="inherit" align="center" variant="h2" marked="center">
         Select Tutor
       </Typography>
       <div className="App">
-        <Grid container spacing={10} style={{ padding: "24px" }}>
+        <Grid container spacing={5} style={{ padding: "24px" }}>
           {tutors.map(tutor => (
             <Grid item xs={12} sm={6} md={4} lg={4} xl={3}>
               <TutorCard tutor={tutor} dept={dept} num={num}></TutorCard>
