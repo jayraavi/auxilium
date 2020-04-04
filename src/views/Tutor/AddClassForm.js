@@ -89,6 +89,7 @@ export default function AddClassForm() {
         .then(() => setSubmitted(true))
         .catch(err => console.log(err));
     }
+    fetched = false;
   };
 
   const mustBeNumber = value => (isNaN(value) ? "Must be a number" : undefined);
