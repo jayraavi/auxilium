@@ -24,6 +24,7 @@ const useStyles = makeStyles(theme => ({
 export default function AddClassForm() {
   const classes = useStyles();
   const [submitted, setSubmitted] = React.useState(false);
+  const [error, setError] = React.useState(false);
   var classAlreadyAdded = false;
   var fetched = false;
 
@@ -83,11 +84,14 @@ export default function AddClassForm() {
     if (classAlreadyAdded) {
       window.alert("you've already added this class");
       classAlreadyAdded = false;
+      setSubmitted(false);
+      setError(true);
     } else {
       console.log(formObj);
       create(formObj.email, formObj.password)
         .then(() => setSubmitted(true))
         .catch(err => console.log(err));
+      setError(false);
     }
     fetched = false;
   };
@@ -107,6 +111,11 @@ export default function AddClassForm() {
     <div>
       {submitted ? (
         <Alert severity="success">Class added successfully</Alert>
+      ) : (
+        <div></div>
+      )}
+      {error ? (
+        <Alert severity="error">Class could not be added</Alert>
       ) : (
         <div></div>
       )}
