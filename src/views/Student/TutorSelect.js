@@ -119,6 +119,7 @@ function TutorSelect(props) {
         src={backgroundImage}
         alt="increase priority"
       />
+
       <Typography color="inherit" align="center" variant="h2" marked="center">
         Select Tutor
       </Typography>

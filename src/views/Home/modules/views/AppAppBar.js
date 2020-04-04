@@ -47,6 +47,7 @@ const handleSignOut = () => {
       .catch(err => console.log(err));
     localStorage.setItem("userLoggedIn", "");
     localStorage.setItem("isTutor", "");
+    localStorage.setItem("tutorID", "");
   }
 };
 

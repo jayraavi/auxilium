@@ -89,7 +89,7 @@ function SignUp() {
         .then(() => setConfirmed(true), console.log("confirmed"))
         .catch(err => console.log(err));
       setEmail(formObj.email);
-      setName(formObj.firstName + "" + formObj.lastName);
+      setName(formObj.firstName + " " + formObj.lastName);
       setCell(formObj.number);
     }
   };

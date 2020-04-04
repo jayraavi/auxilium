@@ -1,12 +1,13 @@
 const imagesStyles = {
   root: {
-    minWidth: 345
+    minWidth: 240,
+    maxWidth: 300
   },
   media: {
     height: 140
   },
   imgFluid: {
-    maxWidth: "50%",
+    maxWidth: "30%",
     height: "auto"
   },
   imgRounded: {
@@ -44,6 +45,12 @@ const imagesStyles = {
     bottom: "0",
     left: "0",
     padding: "1.25rem"
+  },
+  center: {
+    display: "block",
+    marginLeft: "auto",
+    marginRight: "auto",
+    width: "50%"
   }
 };
 

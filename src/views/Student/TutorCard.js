@@ -50,7 +50,9 @@ function TutorCard(props) {
   const imageClasses = classNames(
     classes.imgRaised,
     classes.imgRoundedCircle,
-    classes.imgFluid
+    classes.imgFluid,
+    classes.textAlign,
+    classes.center
   );
   const navImageClasses = classNames(classes.imgRounded, classes.imgGallery);
 
@@ -90,7 +92,7 @@ function TutorCard(props) {
             </Typography>
           </CardContent>
         </CardActionArea>
-        <CardActions>
+        <CardActions style={{ justifyContent: "center" }}>
           <Button size="small" color="primary">
             Contact
           </Button>
