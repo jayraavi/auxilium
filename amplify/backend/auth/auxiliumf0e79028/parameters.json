@@ -1,6 +1,6 @@
 {
     "identityPoolName": "auxiliumf0e79028_identitypool_f0e79028",
-    "allowUnauthenticatedIdentities": false,
+    "allowUnauthenticatedIdentities": true,
     "resourceNameTruncated": "auxilif0e79028",
     "userPoolName": "auxiliumf0e79028_userpool_f0e79028",
     "autoVerifiedAttributes": [
