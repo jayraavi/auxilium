@@ -1,6 +1,5 @@
 import React from "react";
 import { makeStyles, withStyles } from "@material-ui/core/styles";
-import InputBase from "@material-ui/core/InputBase";
 import DeptTextField from "./DeptTextField";
 import NumTextField from "./NumTextField";
 import { Field, Form, FormSpy } from "react-final-form";
@@ -8,8 +7,7 @@ import FormButton from "../Home/modules/form/FormButton";
 import Alert from "@material-ui/lab/Alert";
 import Amplify, { API, graphqlOperation } from "aws-amplify";
 import { createClass } from "../../graphql/mutations";
-
-import { Redirect } from "react-router-dom";
+import { listClasss } from "../../graphql/queries";
 
 const useStyles = makeStyles(theme => ({
   margin: {
@@ -25,11 +23,43 @@ const useStyles = makeStyles(theme => ({
 
 export default function AddClassForm() {
   const classes = useStyles();
-  const [age, setAge] = React.useState("");
   const [submitted, setSubmitted] = React.useState(false);
-  const [dept, setDept] = React.useState("");
-  const [num, setNum] = React.useState("");
-  const [error, setError] = React.useState(false);
+  var classAlreadyAdded = false;
+  var fetched = false;
+
+  async function getClassForTutor(dept, num) {
+    if (!fetched) {
+      try {
+        const data = await API.graphql(
+          graphqlOperation(listClasss, {
+            filter: {
+              dept: {
+                eq: dept
+              },
+              and: [
+                {
+                  num: {
+                    eq: num
+                  },
+                  tutorID: {
+                    eq: localStorage.getItem("tutorID")
+                  }
+                }
+              ]
+            }
+          })
+        );
+        fetched = true;
+        console.log(data);
+        if (data.data.listClasss.items.length > 0) {
+          classAlreadyAdded = true;
+        }
+        console.log(classAlreadyAdded);
+      } catch (err) {
+        console.log(err.message);
+      }
+    }
+  }
 
   async function create(dept, num) {
     const tutorData = {
@@ -46,46 +76,40 @@ export default function AddClassForm() {
       console.log(err.message);
     }
   }
-  const handleChange = event => {
-    setAge(event.target.value);
+
+  const handleSubmit2 = async formObj => {
+    await getClassForTutor(formObj.email, formObj.password);
+
+    if (classAlreadyAdded) {
+      window.alert("you've already added this class");
+      classAlreadyAdded = false;
+    } else {
+      console.log(formObj);
+      create(formObj.email, formObj.password)
+        .then(() => setSubmitted(true))
+        .catch(err => console.log(err));
+    }
   };
 
-  const handleSubmit2 = formObj => {
-    console.log(formObj);
-    create(formObj.email, formObj.password)
-      .then(() => setSubmitted(true))
-      .catch(() => setError(true));
-    // setDept(formObj.email);
-    // setNum(formObj.password);
-    // localStorage.setItem("dept", formObj.email);
-    // localStorage.setItem("num", formObj.password);
-  };
-
-  // if (submitted) {
-  //   return (
-  //     <Redirect
-  //       to={{
-  //         pathname: "/viewTutors",
-  //         state: { dept: { dept }, num: { num } }
-  //       }}
-  //     />
-  //   );
-  // }
+  const mustBeNumber = value => (isNaN(value) ? "Must be a number" : undefined);
+  const maxValue = max => value =>
+    isNaN(value) || value <= max
+      ? undefined
+      : `Class number can't be bigger than ${max}`;
+  const composeValidators = (...validators) => value =>
+    validators.reduce(
+      (error, validator) => error || validator(value),
+      undefined
+    );
 
   return (
     <div>
       {submitted ? (
-        <Alert severity="success">
-          This is a success alert — check it out!
-        </Alert>
+        <Alert severity="success">Class added successfully</Alert>
       ) : (
         <div></div>
       )}
-      {error ? (
-        <Alert severity="error">This is an error alert — check it out!</Alert>
-      ) : (
-        <div></div>
-      )}
+
       <Form onSubmit={handleSubmit2} subscription={{ submitting: true }}>
         {({ handleSubmit }) => (
           <form onSubmit={handleSubmit}>
@@ -106,6 +130,7 @@ export default function AddClassForm() {
               component={NumTextField}
               required
               name="password"
+              validate={composeValidators(mustBeNumber, maxValue(599))}
               autoComplete="current-password"
               label="Num"
               margin="normal"
@@ -116,7 +141,6 @@ export default function AddClassForm() {
               size="large"
               color="secondary"
               fullWidth
-              // href={"/viewTutors"}
             >
               {"Add Class"}
             </FormButton>
