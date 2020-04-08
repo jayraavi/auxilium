@@ -1,5 +1,12 @@
 # auxilium
-A service to connect Cal Poly students with able tutors. This is a work in progress - my first time making a full stack app!
+
+## Overview
+Auxilium is an a tutor-finding tool that can help Cal Poly students find tutors for specific classes they're struggling in. This is a work in progress, feel free to contribute!
+
+## Getting Started
+`git clone https://github.com/jayraavi/auxilium`
+This app requires npm.  To start the app, cd into `src` and run `npm install` to install the app's dependencies.
+To start the app, run `npm start`
 
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
