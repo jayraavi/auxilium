@@ -16,6 +16,7 @@ import FormControlLabel from "@material-ui/core/FormControlLabel";
 import FormGroup from "@material-ui/core/FormGroup";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
+import { appHistory } from "../../../../App";
 
 const styles = theme => ({
   title: {
@@ -96,6 +97,12 @@ function AppAppBar(props) {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const handleView = () => {
+    appHistory.push("/editProfile");
+    appHistory.goBack();
+    window.location.reload(false);
+  };
   if (props.curState !== "") {
     return (
       <div>
@@ -138,7 +145,7 @@ function AppAppBar(props) {
                 open={open}
                 onClose={handleClose}
               >
-                <MenuItem onClick={handleClose}>Profile</MenuItem>
+                <MenuItem onClick={handleView}>Profile</MenuItem>
                 <MenuItem onClick={handleClose}>My account</MenuItem>
                 <MenuItem onClick={handleSignOut}>Sign Out</MenuItem>
               </Menu>
