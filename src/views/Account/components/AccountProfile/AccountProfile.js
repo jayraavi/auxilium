@@ -24,7 +24,7 @@ const useStyles = makeStyles(theme => ({
     height: 110,
     width: 100,
     flexShrink: 0,
-    flexGrow: 0
+    flexGrow: 0,
   },
   progress: {
     marginTop: theme.spacing(2)

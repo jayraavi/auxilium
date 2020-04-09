@@ -55,6 +55,8 @@ function ProductHero(props) {
           localStorage.setItem("isTutor", "true");
           console.log(data.data.listTutors.items[0].id);
           localStorage.setItem("tutorID", data.data.listTutors.items[0].id);
+          localStorage.setItem("userID", data.data.listTutors.items[0].id);
+
         }
 
         setFetched(true);
@@ -80,6 +82,7 @@ function ProductHero(props) {
         if (data.data.listStudents.items.length > 0) {
           console.log(data.data.listStudents.items[0].id);
           localStorage.setItem("studentID", data.data.listTutors.items[0].id);
+          localStorage.setItem("userID", data.data.listTutors.items[0].id);
         }
 
         setFetched(true);

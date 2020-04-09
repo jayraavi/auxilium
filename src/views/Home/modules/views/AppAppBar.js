@@ -17,6 +17,7 @@ import FormGroup from "@material-ui/core/FormGroup";
 import MenuItem from "@material-ui/core/MenuItem";
 import Menu from "@material-ui/core/Menu";
 import { appHistory } from "../../../../App";
+import { Redirect } from "react-router-dom";
 
 const styles = theme => ({
   title: {
@@ -81,6 +82,8 @@ const handleSignOut = () => {
     localStorage.setItem("isTutor", "");
     localStorage.setItem("tutorID", "");
     localStorage.setItem("studentID", "");
+    localStorage.setItem("userID", "");
+
     window.location.reload(false);
   }
 };
