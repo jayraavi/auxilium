@@ -4,7 +4,7 @@ import { withStyles } from "@material-ui/core/styles";
 import Button from "../components/Button";
 import Typography from "../components/Typography";
 import ProductHeroLayout from "./ProductHeroLayout";
-import { listTutors } from "../../../../graphql/queries";
+import { listTutors, listStudents } from "../../../../graphql/queries";
 import API, { graphqlOperation } from "@aws-amplify/api";
 
 console.log(localStorage.getItem("isTutor"));
@@ -64,8 +64,37 @@ function ProductHero(props) {
     }
   }
 
+  async function getStudentStatus(email) {
+    if (!fetched) {
+      try {
+        const data = await API.graphql(
+          graphqlOperation(listStudents, {
+            filter: {
+              email: {
+                contains: email
+              }
+            }
+          })
+        );
+        console.log(data.data.listStudents.items);
+        if (data.data.listStudents.items.length > 0) {
+          console.log(data.data.listStudents.items[0].id);
+          localStorage.setItem("studentID", data.data.listTutors.items[0].id);
+        }
+
+        setFetched(true);
+      } catch (err) {
+        console.log(err.message);
+      }
+    }
+  }
+
   useEffect(() => {
     getTutorStatus(localStorage.getItem("userLoggedIn"));
+  });
+
+  useEffect(() => {
+    getStudentStatus(localStorage.getItem("userLoggedIn"));
   });
 
   const { classes } = props;

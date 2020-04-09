@@ -18,7 +18,7 @@ import { appHistory } from "../../App";
 import SignIn from "./SignIn";
 import TutorStudentDrop from "./TutorStudentDrop";
 import Amplify, { API, graphqlOperation } from "aws-amplify";
-import { createTutor } from "../../graphql/mutations";
+import { createTutor, createStudent } from "../../graphql/mutations";
 
 const useStyles = makeStyles(theme => ({
   form: {
@@ -94,13 +94,13 @@ function SignUp() {
     }
   };
 
-  const tutorData = {
+  const signUpData = {
     name: name,
     email: email,
     cell: cell
   };
 
-  async function create(tutorData) {
+  async function createTutorObject(tutorData) {
     try {
       const data = await API.graphql(
         graphqlOperation(createTutor, { input: tutorData })
@@ -110,10 +110,25 @@ function SignUp() {
       console.log(err.message);
     }
   }
+
+  async function createStudentObject(studentData) {
+    try {
+      const data = await API.graphql(
+        graphqlOperation(createStudent, { input: studentData })
+      );
+      console.log(data);
+    } catch (err) {
+      console.log(err.message);
+    }
+  }
   useEffect(() => {
     if (confirmed && isTutor) {
       console.log("Creating tutor");
-      create(tutorData);
+      createTutorObject(signUpData);
+    }
+    if (confirmed && !isTutor) {
+      console.log("Creating student");
+      createStudentObject(signUpData);
     }
   });
 

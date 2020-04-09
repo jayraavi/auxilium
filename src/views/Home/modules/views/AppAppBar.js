@@ -80,6 +80,7 @@ const handleSignOut = () => {
     localStorage.setItem("userLoggedIn", "");
     localStorage.setItem("isTutor", "");
     localStorage.setItem("tutorID", "");
+    localStorage.setItem("studentID", "");
     window.location.reload(false);
   }
 };
