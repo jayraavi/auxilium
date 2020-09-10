@@ -11,13 +11,13 @@ import {
   Typography,
   Divider,
   Button,
-  LinearProgress
+  LinearProgress,
 } from "@material-ui/core";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   root: {},
   details: {
-    display: "flex"
+    display: "flex",
   },
   avatar: {
     marginLeft: "auto",
@@ -27,24 +27,25 @@ const useStyles = makeStyles(theme => ({
     flexGrow: 0,
   },
   progress: {
-    marginTop: theme.spacing(2)
+    marginTop: theme.spacing(2),
   },
   uploadButton: {
-    marginRight: theme.spacing(2)
-  }
+    marginRight: theme.spacing(2),
+  },
 }));
 
-const AccountProfile = props => {
+const AccountProfile = (props) => {
   const { className, ...rest } = props;
+  const name = props.name;
 
   const classes = useStyles();
 
   const user = {
-    name: "Shen Zhi",
+    name: name,
     city: "Los Angeles",
     country: "USA",
     timezone: "GTM-7",
-    avatar: "/images/avatars/avatar_11.png"
+    avatar: "/images/avatars/avatar_11.png",
   };
 
   return (
@@ -53,28 +54,10 @@ const AccountProfile = props => {
         <div className={classes.details}>
           <div>
             <Typography gutterBottom variant="h2">
-              John Doe
-            </Typography>
-            <Typography
-              className={classes.locationText}
-              color="textSecondary"
-              variant="body1"
-            >
-              {user.city}, {user.country}
-            </Typography>
-            <Typography
-              className={classes.dateText}
-              color="textSecondary"
-              variant="body1"
-            >
-              {moment().format("hh:mm A")} ({user.timezone})
+              {name}
             </Typography>
           </div>
           <Avatar className={classes.avatar} src={user.avatar} />
-        </div>
-        <div className={classes.progress}>
-          <Typography variant="body1">Profile Completeness: 70%</Typography>
-          <LinearProgress value={70} variant="determinate" />
         </div>
       </CardContent>
       <Divider />
@@ -93,7 +76,7 @@ const AccountProfile = props => {
 };
 
 AccountProfile.propTypes = {
-  className: PropTypes.string
+  className: PropTypes.string,
 };
 
 export default AccountProfile;
