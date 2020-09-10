@@ -42,7 +42,7 @@ const Account = () => {
     const userID = localStorage.getItem("userID");
     setID(userID);
     console.log(userID);
-    if (localStorage.getItem("tutorID") !== "") {
+    if (localStorage.getItem("isTutor") !== "") {
       setIsTutor(true);
       getTutorData(userID);
     } else {
