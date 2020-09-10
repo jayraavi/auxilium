@@ -19,55 +19,55 @@ import Menu from "@material-ui/core/Menu";
 import { appHistory } from "../../../../App";
 import { Redirect } from "react-router-dom";
 
-const styles = theme => ({
+const styles = (theme) => ({
   title: {
     fontSize: 24,
     flexGrow: 1,
-    textAlign: "center"
+    textAlign: "center",
   },
   placeholder: toolbarStyles(theme).root,
   toolbar: {
-    justifyContent: "space-between"
+    justifyContent: "space-between",
   },
   left: {
-    flex: 1
+    flex: 1,
   },
   leftLinkActive: {
-    color: theme.palette.common.white
+    color: theme.palette.common.white,
   },
   right: {
     flex: 1,
     display: "flex",
-    justifyContent: "flex-end"
+    justifyContent: "flex-end",
   },
   rightLink: {
     fontSize: 16,
     color: theme.palette.common.white,
-    marginLeft: theme.spacing(3)
+    marginLeft: theme.spacing(3),
   },
   helloText: {
     fontSize: 16,
     color: theme.palette.common.white,
-    marginLeft: theme.spacing(3)
+    marginLeft: theme.spacing(3),
   },
   linkSecondary: {
-    color: theme.palette.secondary.main
+    color: theme.palette.secondary.main,
   },
   appbar: {
-    alignItems: "center"
+    alignItems: "center",
   },
   logoHorizontallyCenter: {
     position: "absolute",
     left: "50%",
     top: "50%",
-    transform: "translate(-50%, -50%)"
+    transform: "translate(-50%, -50%)",
   },
   logo: {
     margin: "auto",
     textAlign: "center",
     maxWidth: "50%",
-    maxHeight: "70%"
-  }
+    maxHeight: "70%",
+  },
 });
 
 const loggedIn = localStorage.getItem("userLoggedIn");
@@ -76,8 +76,8 @@ const handleSignOut = () => {
   console.log("yo");
   if (loggedIn !== "") {
     Auth.signOut()
-      .then(data => console.log(data))
-      .catch(err => console.log(err));
+      .then((data) => console.log(data))
+      .catch((err) => console.log(err));
     localStorage.setItem("userLoggedIn", "");
     localStorage.setItem("isTutor", "");
     localStorage.setItem("tutorID", "");
@@ -94,7 +94,7 @@ function AppAppBar(props) {
 
   const { classes } = props;
 
-  const handleMenu = event => {
+  const handleMenu = (event) => {
     setAnchorEl(event.currentTarget);
   };
 
@@ -139,12 +139,12 @@ function AppAppBar(props) {
                 anchorEl={anchorEl}
                 anchorOrigin={{
                   vertical: "top",
-                  horizontal: "right"
+                  horizontal: "right",
                 }}
                 keepMounted
                 transformOrigin={{
                   vertical: "top",
-                  horizontal: "right"
+                  horizontal: "right",
                 }}
                 open={open}
                 onClose={handleClose}
@@ -205,7 +205,7 @@ function AppAppBar(props) {
 }
 
 AppAppBar.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(AppAppBar);

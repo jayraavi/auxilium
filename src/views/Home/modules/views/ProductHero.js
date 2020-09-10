@@ -12,25 +12,25 @@ console.log(localStorage.getItem("isTutor"));
 const backgroundImage =
   "https://images.unsplash.com/photo-1468276311594-df7cb65d8df6?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&w=1000&q=80";
 
-const styles = theme => ({
+const styles = (theme) => ({
   background: {
     backgroundImage: `url(${backgroundImage})`,
     backgroundColor: "#7fc7d9", // Average color of the background image.
-    backgroundPosition: "center"
+    backgroundPosition: "center",
   },
   button: {
-    minWidth: 200
+    minWidth: 200,
   },
   h5: {
     marginBottom: theme.spacing(4),
     marginTop: theme.spacing(4),
     [theme.breakpoints.up("sm")]: {
-      marginTop: theme.spacing(10)
-    }
+      marginTop: theme.spacing(10),
+    },
   },
   more: {
-    marginTop: theme.spacing(2)
-  }
+    marginTop: theme.spacing(2),
+  },
 });
 
 const loggedIn = localStorage.getItem("userLoggedIn");
@@ -45,9 +45,9 @@ function ProductHero(props) {
           graphqlOperation(listTutors, {
             filter: {
               email: {
-                contains: email
-              }
-            }
+                contains: email,
+              },
+            },
           })
         );
         console.log(data.data.listTutors.items);
@@ -56,7 +56,6 @@ function ProductHero(props) {
           console.log(data.data.listTutors.items[0].id);
           localStorage.setItem("tutorID", data.data.listTutors.items[0].id);
           localStorage.setItem("userID", data.data.listTutors.items[0].id);
-
         }
 
         setFetched(true);
@@ -73,16 +72,16 @@ function ProductHero(props) {
           graphqlOperation(listStudents, {
             filter: {
               email: {
-                contains: email
-              }
-            }
+                contains: email,
+              },
+            },
           })
         );
         console.log(data.data.listStudents.items);
         if (data.data.listStudents.items.length > 0) {
           console.log(data.data.listStudents.items[0].id);
-          localStorage.setItem("studentID", data.data.listTutors.items[0].id);
-          localStorage.setItem("userID", data.data.listTutors.items[0].id);
+          localStorage.setItem("studentID", data.data.listStudents.items[0].id);
+          localStorage.setItem("userID", data.data.listStudents.items[0].id);
         }
 
         setFetched(true);
@@ -152,7 +151,7 @@ function ProductHero(props) {
 }
 
 ProductHero.propTypes = {
-  classes: PropTypes.object.isRequired
+  classes: PropTypes.object.isRequired,
 };
 
 export default withStyles(styles)(ProductHero);
