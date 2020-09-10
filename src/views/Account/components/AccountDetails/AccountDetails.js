@@ -10,7 +10,7 @@ import {
   Divider,
   Grid,
   Button,
-  TextField
+  TextField,
 } from "@material-ui/core";
 import API, { graphqlOperation } from "@aws-amplify/api";
 import { getTutor, getStudent } from "../../../../graphql/queries";
@@ -18,10 +18,10 @@ import { updateTutor, updateStudent } from "../../../../graphql/mutations";
 import Alert from "@material-ui/lab/Alert";
 
 const useStyles = makeStyles(() => ({
-  root: {}
+  root: {},
 }));
 
-const AccountDetails = props => {
+const AccountDetails = (props) => {
   const { className, ...rest } = props;
 
   const classes = useStyles();
@@ -39,8 +39,9 @@ const AccountDetails = props => {
     const userID = localStorage.getItem("userID");
     setID(userID);
     console.log(userID);
-    if (localStorage.getItem("tutorID") !== "") {
+    if (localStorage.getItem("isTutor") !== "") {
       setIsTutor(true);
+      console.log("bugggggggg");
       getTutorData(userID);
     } else {
       getStudentData(userID);
@@ -106,15 +107,15 @@ const AccountDetails = props => {
     }
   }
 
-  const handleNameChange = event => {
+  const handleNameChange = (event) => {
     setName(event.target.value);
   };
 
-  const handleEmailChange = event => {
+  const handleEmailChange = (event) => {
     setEmail(event.target.value);
   };
 
-  const handleCellChange = event => {
+  const handleCellChange = (event) => {
     setCell(event.target.value);
   };
 
@@ -123,7 +124,7 @@ const AccountDetails = props => {
       id: id,
       name: name,
       email: email,
-      cell: cell
+      cell: cell,
     };
     if (isTutor) {
       updateTutorObject(updateData);
@@ -136,16 +137,16 @@ const AccountDetails = props => {
   const states = [
     {
       value: "alabama",
-      label: "Alabama"
+      label: "Alabama",
     },
     {
       value: "new-york",
-      label: "New York"
+      label: "New York",
     },
     {
       value: "san-francisco",
-      label: "San Francisco"
-    }
+      label: "San Francisco",
+    },
   ];
 
   return (
@@ -222,7 +223,7 @@ const AccountDetails = props => {
 };
 
 AccountDetails.propTypes = {
-  className: PropTypes.string
+  className: PropTypes.string,
 };
 
 export default AccountDetails;

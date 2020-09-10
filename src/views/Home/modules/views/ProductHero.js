@@ -56,6 +56,8 @@ function ProductHero(props) {
           console.log(data.data.listTutors.items[0].id);
           localStorage.setItem("tutorID", data.data.listTutors.items[0].id);
           localStorage.setItem("userID", data.data.listTutors.items[0].id);
+        } else {
+          localStorage.setItem("isTutor", "");
         }
 
         setFetched(true);
