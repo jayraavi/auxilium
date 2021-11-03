@@ -21,7 +21,7 @@
     "react-router-dom": "^5.1.2",
     "react-scripts": "3.4.1",
     "react-swipeable-views": "^0.13.9",
-    "validator": "^13.0.0"
+    "validator": "^13.7.0"
   },
   "scripts": {
     "start": "react-scripts start",
